@@ -1,0 +1,38 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    //      Retrofit library
+    api "com.google.code.gson:gson:$GSON_VERSION"
+    api "com.squareup.retrofit2:retrofit:$RETROFIT_VERSION"
+    api "com.squareup.retrofit2:converter-gson:$RETROFIT_VERSION"
+    api "com.squareup.okhttp3:logging-interceptor:$INTERCEPTER_VERSION"
+    api "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$KOTLIN_COROUTINE_ADAPTER_FACTORY_VERSION"
+    //    Coroutines
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$KOTLIN_COROUTINE_VERSION"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:$KOTLIN_COROUTINE_VERSION"
+    api project(path: ':model')
+
+}

@@ -1,0 +1,2 @@
+include ':app', ':data', ':database', ':network', ':model'
+rootProject.name='TechCleanArch'
