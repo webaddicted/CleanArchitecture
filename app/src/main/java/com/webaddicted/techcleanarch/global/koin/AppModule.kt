@@ -1,20 +1,14 @@
 package com.webaddicted.techcleanarch.global.koin
 
 
-import androidx.room.Room
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.webaddicted.database.database.AppDatabase
-import com.webaddicted.database.utils.DbConstant
 import com.webaddicted.network.apiutils.ApiConstant
 import com.webaddicted.network.apiutils.ApiServices
-import com.webaddicted.network.apiutils.ReflectionUtil
-import com.webaddicted.techcleanarch.AppApplication
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -58,14 +52,14 @@ val appModule = module {
     single {
         (get<Retrofit>()).create<ApiServices>(ApiServices::class.java)
     }
-    single {
-        Room.databaseBuilder(
-            (androidApplication() as AppApplication),
-            AppDatabase::class.java,
-            DbConstant.DB_NAME
-        ).allowMainThreadQueries().build()
-        //.addMigrations(migration4To5, migration5To6).build()
-    }
+//    single {
+//        Room.databaseBuilder(
+//            (androidApplication() as AppApplication),
+//            AppDatabase::class.java,
+//            DbConstant.DB_NAME
+//        ).allowMainThreadQueries().build()
+//        //.addMigrations(migration4To5, migration5To6).build()
+//    }
 //    single { (get() as AppDatabase).userInfoDao() }
-    single { ReflectionUtil(get()) }
+//    single { ReflectionUtil(get()) }
 }
