@@ -1,4 +1,4 @@
-package com.webaddicted.kotlinproject.view.base
+package com.webaddicted.techcleanarch.view.base
 
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -27,27 +27,29 @@ abstract class ScrollListener : RecyclerView.OnScrollListener {
 
     constructor(layoutManager: GridLayoutManager) {
         this.mLayoutManager = layoutManager
-        visibleThreshold = visibleThreshold * layoutManager.spanCount
+        visibleThreshold *= layoutManager.spanCount
     }
 
     constructor(layoutManager: StaggeredGridLayoutManager) {
         this.mLayoutManager = layoutManager
-        visibleThreshold = visibleThreshold * layoutManager.spanCount
+        visibleThreshold *= layoutManager.spanCount
     }
 
     constructor(layoutMgr: RecyclerView.LayoutManager){
-        if (layoutMgr is LinearLayoutManager){
-            this.mLayoutManager = layoutMgr as LinearLayoutManager
-        }else if (layoutMgr is GridLayoutManager){
-            this.mLayoutManager = layoutMgr as GridLayoutManager
-            visibleThreshold = visibleThreshold * layoutMgr.spanCount
-        }else if (layoutMgr is StaggeredGridLayoutManager){
-            this.mLayoutManager = layoutMgr as  StaggeredGridLayoutManager
-            visibleThreshold = visibleThreshold * layoutMgr.spanCount
+        when (layoutMgr) {
+            is LinearLayoutManager -> this.mLayoutManager = layoutMgr
+            is GridLayoutManager -> {
+                this.mLayoutManager = layoutMgr
+                visibleThreshold *= layoutMgr.spanCount
+            }
+            is StaggeredGridLayoutManager -> {
+                this.mLayoutManager = layoutMgr
+                visibleThreshold *= layoutMgr.spanCount
+            }
         }
     }
 
-    fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
+    private fun getLastVisibleItem(lastVisibleItemPositions: IntArray): Int {
         var maxSize = 0
         for (i in lastVisibleItemPositions.indices) {
             if (i == 0) {
@@ -65,15 +67,27 @@ abstract class ScrollListener : RecyclerView.OnScrollListener {
     override fun onScrolled(view: RecyclerView, dx: Int, dy: Int) {
         var lastVisibleItemPosition = 0
         val totalItemCount = mLayoutManager?.itemCount
-        if (mLayoutManager is StaggeredGridLayoutManager) {
-            val lastVisibleItemPositions =
-                (mLayoutManager as StaggeredGridLayoutManager).findLastVisibleItemPositions(null)
-            // get maximum element within the list
-            lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions)
-        } else if (mLayoutManager is GridLayoutManager) {
-            lastVisibleItemPosition = (mLayoutManager as GridLayoutManager).findLastVisibleItemPosition()
-        } else if (mLayoutManager is LinearLayoutManager) {
-            lastVisibleItemPosition = (mLayoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+        when (mLayoutManager) {
+            is StaggeredGridLayoutManager -> {
+                val lastVisibleItemPositions =
+                    (mLayoutManager as StaggeredGridLayoutManager).findLastVisibleItemPositions(null)
+                // get maximum element within the list
+                lastVisibleItemPosition = getLastVisibleItem(lastVisibleItemPositions)
+            }
+            is GridLayoutManager ->
+                lastVisibleItemPosition = (mLayoutManager as GridLayoutManager).findLastVisibleItemPosition()
+
+            is LinearLayoutManager ->
+                lastVisibleItemPosition = (mLayoutManager as LinearLayoutManager).findLastVisibleItemPosition()
+            // If the total item count is zero and the previous isn't, assume the
+            // list is invalidated and should be reset back to initial state
+            // If it’s still loading, we check to see if the dataset count has
+            // changed, if so we conclude it has finished loading and update the current page
+            // number and total item count.
+            // If it isn’t currently loading, we check to see if we have breached
+            // the visibleThreshold and need to reload more data.
+            // If we do need to reload some more data, we execute onLoadMore to fetch the data.
+            // threshold should reflect how many total columns there are too
         }
         // If the total item count is zero and the previous isn't, assume the
         // list is invalidated and should be reset back to initial state

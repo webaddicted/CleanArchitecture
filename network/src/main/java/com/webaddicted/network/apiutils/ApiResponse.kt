@@ -4,22 +4,22 @@ import java.net.SocketTimeoutException
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
-class ApiResponse<T>(val status: Status, val data: T?, val error: Throwable?) {
+class ApiResponse<T>(val status: Status, val data: T?, private val error: Throwable?) {
 
      var errorMessage: String? = null
-     var errorType: Error? = null
-    private var network_error = "Network Error"
-    private var internal_server_error = "Internal Server Error"
+     private var errorType: Error? = null
+    private var networkError = "Network Error"
+    private var internalServerError = "Internal Server Error"
 
     init {
         if (error == null && status == Status.ERROR) {
             errorType = Error.API_ERROR
         } else if (error is SocketTimeoutException) {
             errorType = Error.TIMEOUT_ERROR
-            errorMessage = network_error
+            errorMessage = networkError
         } else {
             errorType = Error.SERVER_ERROR
-            errorMessage = internal_server_error
+            errorMessage = internalServerError
         }
     }
 

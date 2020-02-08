@@ -48,7 +48,7 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
         if (loaderDialog != null) {
             val fragment = fragmentManager?.findFragmentByTag(LoaderDialog.TAG)
             if (fragment != null) fragmentManager?.beginTransaction()?.remove(fragment)?.commit()
-            loaderDialog?.show(fragmentManager, LoaderDialog.TAG)
+            fragmentManager?.let { loaderDialog?.show(it, LoaderDialog.TAG) }
         }
     }
 
@@ -57,7 +57,7 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     }
 
     protected fun <T> apiResponseHandler(view: View, response: ApiResponse<T>) {
-        when (response?.status) {
+        when (response.status) {
             ApiResponse.Status.LOADING -> {
                 showApiLoader()
             }
@@ -121,15 +121,15 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
 
 
     fun checkStoragePermission(): ArrayList<String> {
-        return (getActivity() as BaseActivity).checkStoragePermission()
+        return (activity as BaseActivity).checkStoragePermission()
     }
 
     fun checkLocationPermission(): ArrayList<String> {
-        return (getActivity() as BaseActivity).checkLocationPermission()
+        return (activity as BaseActivity).checkLocationPermission()
     }
 
     fun getPlaceHolder(imageLoaderPos: Int): String {
-        val imageLoader = getResources().getStringArray(R.array.image_loader)
+        val imageLoader = resources.getStringArray(R.array.image_loader)
         return imageLoader[imageLoaderPos]
     }
 }

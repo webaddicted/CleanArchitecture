@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TechCleanArch</string>
     <string name="cancel">Cancel</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="forcefully_enable_permission">You have forcefully denied some of the required permissions for this action.\nPlease go to permissions and allow them.</string>
     <string name="no_network_msg"><![CDATA[Please check your internet connection &amp; try again]]></string>
     <string name="something_went_wrong">Something went wrong, please try again</string>
@@ -13,7 +13,7 @@
     <string name="select_picture">Select picture</string>
     <string name="back_online">Back online</string>
     <string name="no_internet_connection">no internet connection</string>
-    <string name="loading">loading...</string>
+    <string name="loading">loading…</string>
     <string name="dummyText">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmood tempor inciddidunt ut labore et dolore magna sed do sed do aliqua.</string>
     <string name="news_channel">News Channel</string>
     <string name="txt_no_data_found">no data found</string>

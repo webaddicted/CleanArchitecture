@@ -5,8 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import com.webaddicted.kotlinproject.global.common.CompressImage
-import com.webaddicted.kotlinproject.global.common.Lg
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.global.annotationdef.MediaPickerType
 import com.webaddicted.techcleanarch.global.common.MediaPickerHelper
@@ -21,9 +19,9 @@ class MediaPickerUtils {
     val REQUEST_CAMERA_VIDEO = 5000
     val REQUEST_SELECT_FILE_FROM_GALLERY = 5002
     private var mImagePickerListener: ImagePickerListener? = null
-    var mMimeTypes = arrayOf("image/jpeg", "image/png", "image/jpg")
-    var mVideoMimeTypes = arrayOf("video/3gp", "video/mpeg", "video/avi", "video/mp4")
-    var mImageMimeTypes = arrayOf("image/jpeg", "image/png", "image/jpg")
+    private var mMimeTypes = arrayOf("image/jpeg", "image/png", "image/jpg")
+    private var mVideoMimeTypes = arrayOf("video/3gp", "video/mpeg", "video/avi", "video/mp4")
+    private var mImageMimeTypes = arrayOf("image/jpeg", "image/png", "image/jpg")
     private var mfilePath: File? = null
 
     /**
@@ -115,24 +113,24 @@ class MediaPickerUtils {
             REQUEST_SELECT_FILE_FROM_GALLERY -> {
                 val files = MediaPickerHelper().getData(activity, data)
                 for (i in files.indices) {
-                    val filePath = files.get(i).toString()
+                    val filePath = files[i].toString()
                     filePath.substring(filePath.lastIndexOf(".") + 1)
                     if (filePath.contains(mMimeTypes[0]) ||
                         filePath.contains(mMimeTypes[1]) ||
                         filePath.contains(mMimeTypes[2])
                     ) {
                         compressedFiles =
-                            CompressImage.compressImage(activity, files.get(i).toString())
+                            CompressImage.compressImage(activity, files[i].toString())
                         Lg.d(
                             TAG,
                             "onActivityResult: old Image - " + FileUtils.getFileSizeInMbTest(
-                                files.get(i)
+                                files[i]
                             ) +
                                     "\n compress image - " + FileUtils.getFileSizeInMbTest(
                                 compressedFiles
                             )
                         )
-                        files.set(i, compressedFiles)
+                        files[i] = compressedFiles
                     }
                 }
                 mImagePickerListener!!.imagePath(files)

@@ -91,16 +91,20 @@ fun <T> getPlaceHolder(
     drawableTypeRequest: RequestBuilder<T>,
     imageLoaderType: String
 ): RequestBuilder<T> {
-    val imageLoadersArray = context.getResources().getStringArray(R.array.image_loader)
-    if (imageLoadersArray[0] == imageLoaderType) {
-        drawableTypeRequest.error(R.drawable.logo)
-        drawableTypeRequest.placeholder(R.drawable.logo)
-    } else if (imageLoadersArray[1] == imageLoaderType) {
-        drawableTypeRequest.error(R.drawable.logo)
-        drawableTypeRequest.placeholder(R.drawable.logo)
-    }  else {
-        drawableTypeRequest.error(R.color.colorAccent)
-        drawableTypeRequest.placeholder(R.color.colorAccent)
+    val imageLoadersArray = context.resources.getStringArray(R.array.image_loader)
+    when (imageLoaderType) {
+        imageLoadersArray[0] -> {
+            drawableTypeRequest.error(R.drawable.logo)
+            drawableTypeRequest.placeholder(R.drawable.logo)
+        }
+        imageLoadersArray[1] -> {
+            drawableTypeRequest.error(R.drawable.logo)
+            drawableTypeRequest.placeholder(R.drawable.logo)
+        }
+        else -> {
+            drawableTypeRequest.error(R.color.colorAccent)
+            drawableTypeRequest.placeholder(R.color.colorAccent)
+        }
     }
     return drawableTypeRequest
 }
@@ -115,8 +119,8 @@ fun <T> getPlaceHolder(
 fun Context.isNetworkAvailable(): Boolean {
     val connMgr =
         getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-    val activeNetwork = connMgr?.activeNetworkInfo
-    return activeNetwork != null && activeNetwork.isAvailable && activeNetwork.isConnected
+    val activeNetwork = connMgr.activeNetworkInfo
+    return !(activeNetwork == null || !activeNetwork.isAvailable || !activeNetwork.isConnected)
 }
 
 fun Context.showToast(message: String) {
@@ -127,13 +131,13 @@ fun Context.showToast(message: String) {
  * show internet connection toast
  */
 fun Context.showNoNetworkToast() {
-    showToast(getResources().getString(R.string.no_network_msg))
+    showToast(resources.getString(R.string.no_network_msg))
 }
 
 /**
  * show internet connection toast
  */
-fun Context.showSomwthingWrongToast() {
-    showToast(getResources().getString(R.string.something_went_wrong))
+fun Context.showSomethingWrongToast() {
+    showToast(resources.getString(R.string.something_went_wrong))
 }
 

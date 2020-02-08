@@ -1,5 +1,6 @@
 package com.webaddicted.techcleanarch.global.misc
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.content.Context
 import android.content.Intent
@@ -53,39 +54,56 @@ class GlobalUtility {
         }
 
         fun getDate(context: Context, mDobEtm: TextView) {
-            val datePickerDialog = DatePickerDialog(context, R.style.TimePicker, { view, year, month, dayOfMonth ->
-                var monthValue = month + 1
-                var day:String = ""
-                var dayMonth:String = ""
-                if (dayOfMonth<=9) day= "0"+dayOfMonth
-                else day = dayOfMonth.toString()
-                if (monthValue<=9) dayMonth= "0"+monthValue
-                else dayMonth = monthValue.toString()
-                mDobEtm.text =
-                    "$day/$dayMonth/$year"
-            }, Calendar.getInstance().get(Calendar.YEAR),Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DATE))
+            val datePickerDialog = DatePickerDialog(
+                context,
+                R.style.TimePicker,
+                { view, year, month, dayOfMonth ->
+                    val monthValue = month + 1
+                    var day = ""
+                    var dayMonth = ""
+                    day = if (dayOfMonth <= 9) "0$dayOfMonth"
+                    else dayOfMonth.toString()
+                    dayMonth = if (monthValue <= 9) "0$monthValue"
+                    else monthValue.toString()
+                    mDobEtm.text = "$day/$dayMonth/$year"
+                },
+                Calendar.getInstance().get(Calendar.YEAR),
+                Calendar.getInstance().get(Calendar.MONTH),
+                Calendar.getInstance().get(Calendar.DATE)
+            )
             datePickerDialog.show()
         }
+
         fun getDOBDate(context: Context, mDobEtm: TextView) {
             val datePickerDialog =
-                DatePickerDialog(context, R.style.TimePicker, { view, year, month, dayOfMonth ->
-                    var monthValue = month + 1
-                    var day:String = ""
-                    var dayMonth:String = ""
-
-                    if (dayOfMonth<=9) day= "0"+dayOfMonth
-                    else day = dayOfMonth.toString()
-                    if (monthValue<=9) dayMonth= "0"+monthValue
-                    else dayMonth = monthValue.toString()
-                    mDobEtm.text =
-                        "$dayMonth/$day/$year"
-                }, Calendar.getInstance().get(Calendar.YEAR),Calendar.getInstance().get(Calendar.MONTH),Calendar.getInstance().get(Calendar.DATE))
-            var calendar = Calendar.getInstance();
-            calendar.add(Calendar.YEAR, -16);
-            datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
+                DatePickerDialog(
+                    context,
+                    R.style.TimePicker,
+                    { view, year, month, dayOfMonth ->
+                        val monthValue = month + 1
+                        var day = ""
+                        var dayMonth= ""
+                        day = if (dayOfMonth <= 9) "0$dayOfMonth"
+                        else dayOfMonth.toString()
+                        dayMonth = if (monthValue <= 9) "0$monthValue"
+                        else monthValue.toString()
+                        mDobEtm.text =
+                            "$dayMonth/$day/$year"
+                    },
+                    Calendar.getInstance().get(Calendar.YEAR),
+                    Calendar.getInstance().get(Calendar.MONTH),
+                    Calendar.getInstance().get(Calendar.DATE)
+                )
+            val calendar = Calendar.getInstance()
+            calendar.add(Calendar.YEAR, -16)
+            datePickerDialog.datePicker.maxDate = calendar.timeInMillis
             datePickerDialog.show()
         }
-        fun timePicker(activity: Activity,timeListener: TimePickerDialog.OnTimeSetListener): TimePickerDialog {
+
+        fun timePicker(
+            activity: Activity,
+            timeListener: TimePickerDialog.OnTimeSetListener
+        ): TimePickerDialog {
             val calendar = Calendar.getInstance()
             return TimePickerDialog(
                 activity,
@@ -109,7 +127,7 @@ class GlobalUtility {
             var initDate: Date? = null
             try {
                 initDate = SimpleDateFormat(inputFormat).parse(date)
-            } catch (e: java.text.ParseException) {
+            } catch (e: ParseException) {
                 e.printStackTrace()
             }
 
@@ -162,7 +180,8 @@ class GlobalUtility {
          */
         fun hideKeyboard(activity: Activity) {
             try {
-                val inputManager = activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                val inputManager =
+                    activity.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
                 inputManager.hideSoftInputFromWindow(activity.currentFocus?.windowToken, 0)
             } catch (ignored: Exception) {
                 Log.d("TAG", "hideKeyboard: " + ignored.message)
@@ -176,8 +195,12 @@ class GlobalUtility {
          */
         fun showKeyboard(activity: Activity?) {
             if (activity != null) {
-                val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm?.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+                val imm =
+                    activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.toggleSoftInput(
+                    InputMethodManager.SHOW_FORCED,
+                    InputMethodManager.HIDE_IMPLICIT_ONLY
+                )
             }
         }
 
@@ -281,7 +304,12 @@ class GlobalUtility {
             val spannableString = SpannableString(txtSpannable)
             val foregroundSpan = ForegroundColorSpan(Color.GREEN)
             //            BackgroundColorSpan backgroundSpan = new BackgroundColorSpan(Color.GRAY);
-            spannableString.setSpan(foregroundSpan, starText, endText, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannableString.setSpan(
+                foregroundSpan,
+                starText,
+                endText,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
             //            spannableString.setSpan(backgroundSpan, starText, endText, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             textView.text = spannableString
         }
@@ -302,9 +330,9 @@ class GlobalUtility {
             Locale.setDefault(locale)
             val config = Configuration()
             config.locale = locale
-            context.getResources().updateConfiguration(
+            context.resources.updateConfiguration(
                 config,
-                context.getResources().getDisplayMetrics()
+                context.resources.displayMetrics
             )
         }
 
@@ -312,30 +340,25 @@ class GlobalUtility {
          * Adds a watermark on the given image.
          */
         fun addWatermark(res: Resources, source: Bitmap, mScreenwidth: Int): Bitmap {
-            val w: Int
-            val h: Int
             val c: Canvas
-            val paint: Paint
             val bmp: Bitmap
-            val watermark: Bitmap
-            val matrix: Matrix
             val scale: Float
             val r: RectF
-            w = source.width
-            h = source.height
+            val w: Int = source.width
+            val h: Int = source.height
             // Create the new bitmap
             bmp = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888)
-            paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG or Paint.FILTER_BITMAP_FLAG)
+            val paint = Paint(Paint.ANTI_ALIAS_FLAG or Paint.DITHER_FLAG or Paint.FILTER_BITMAP_FLAG)
             // Copy the original bitmap into the new one
             c = Canvas(bmp)
             c.drawBitmap(source, 0f, 0f, paint)
             // Load the watermark
-            watermark = BitmapFactory.decodeResource(res, R.drawable.logo)
+            val watermark: Bitmap = BitmapFactory.decodeResource(res, R.drawable.logo)
             // Scale the watermark to be approximately 40% of the source image height
             scale = (h.toFloat() * 0.15 / watermark.height.toFloat()).toFloat()
             val scaleX = w.toFloat() / watermark.width.toFloat()
             // Create the matrix
-            matrix = Matrix()
+            val matrix = Matrix()
             matrix.postScale(scaleX, scale)
             // Determine the post-scaled size of the watermark
             r = RectF(0f, 0f, watermark.width.toFloat(), watermark.height.toFloat())
@@ -349,7 +372,8 @@ class GlobalUtility {
             return bmp
         }
 
-        fun showOfflineNotification(context: Context, title:String, description: String) {
+        @SuppressLint("WrongConstant")
+        fun showOfflineNotification(context: Context, title: String, description: String) {
             val intent = Intent(context, SplashActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             if (intent != null) {
@@ -357,7 +381,8 @@ class GlobalUtility {
                     context, getTwoDigitRandomNo(), intent,
                     PendingIntent.FLAG_ONE_SHOT
                 )
-                val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+                val defaultSoundUri =
+                    RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
                 val notificationBuilder = NotificationCompat.Builder(context)
                 notificationBuilder.setSmallIcon(R.mipmap.ic_launcher_round)
                 notificationBuilder.setLargeIcon(
@@ -391,7 +416,6 @@ class GlobalUtility {
                     notificationChannel.lightColor = Color.RED
                     notificationChannel.enableVibration(true)
                     notificationChannel.vibrationPattern = longArrayOf(1000, 1000)
-                    assert(notificationManager != null)
                     notificationBuilder.setChannelId(NOTIFICATION_CHANNEL_ID)
                     notificationManager.createNotificationChannel(notificationChannel)
                 }
@@ -401,6 +425,7 @@ class GlobalUtility {
                 )
             }
         }
+
         fun getIntentForPush(
             ctx: Context,
             mNotificationData: NotificationData?
@@ -419,15 +444,18 @@ class GlobalUtility {
             }
             return mIntent
         }
-          fun captureScreen(activity: Activity) {
-            val v: View = activity.getWindow().getDecorView().getRootView()
+
+        fun captureScreen(activity: Activity) {
+            val v: View = activity.window.decorView.rootView
             v.isDrawingCacheEnabled = true
             val bmp: Bitmap = Bitmap.createBitmap(v.drawingCache)
             v.isDrawingCacheEnabled = false
             try {
                 val sd = FileUtils.appFolder()
-                val dest = File(sd, "SCREEN"
-                        + System.currentTimeMillis() + ".png")
+                val dest = File(
+                    sd, "SCREEN"
+                            + System.currentTimeMillis() + ".png"
+                )
                 val fos = FileOutputStream(dest)
                 bmp.compress(Bitmap.CompressFormat.PNG, 100, fos)
                 fos.flush()

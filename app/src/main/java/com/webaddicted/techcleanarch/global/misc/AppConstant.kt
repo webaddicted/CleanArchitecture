@@ -7,8 +7,7 @@ class AppConstant {
     companion object {
         const val PAGINATION_SIZE: Int = 10
         const val SPLASH_DELAY: Long = 3000
-        val NOTIFICATION_CHANNEL_ID = "com.example"
-
+        const val NOTIFICATION_CHANNEL_ID = "com.example"
     }
 
 }

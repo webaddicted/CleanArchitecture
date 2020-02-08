@@ -1,11 +1,11 @@
-package com.webaddicted.data.sharedPref
+package com.webaddicted.data.sharedpref
 
-import com.webaddicted.data.sharedpref.PreferenceConstant
 import com.webaddicted.model.sharedpref.PreferenceBean
+
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
-class PreferenceMgr constructor(var preferenceUtils: PreferenceUtils) {
+class PreferenceMgr constructor(private var preferenceUtils: PreferenceUtils) {
     /**
      * set user session info
      */

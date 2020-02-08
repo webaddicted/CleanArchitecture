@@ -1,6 +1,6 @@
 package com.webaddicted.data.repo
 
-import com.webaddicted.data.sharedPref.PreferenceMgr
+import com.webaddicted.data.sharedpref.PreferenceMgr
 import com.webaddicted.database.dao.UserInfoDao
 import org.koin.core.KoinComponent
 import org.koin.core.inject

@@ -1,6 +1,5 @@
 package com.webaddicted.techcleanarch.global.koin
 
-
 import com.google.gson.FieldNamingPolicy
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -28,17 +27,17 @@ val appModule = module {
 
     /* PROVIDE RETROFIT SINGLETON */
     single {
-        var loggingInterceptor = HttpLoggingInterceptor()
+        val loggingInterceptor = HttpLoggingInterceptor()
         loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
 
-        var httpClient = OkHttpClient.Builder()
+        val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(loggingInterceptor)
         httpClient.connectTimeout(ApiConstant.API_TIME_OUT, TimeUnit.MILLISECONDS)
         httpClient.addInterceptor { chain ->
             val request = chain.request().newBuilder().build()
             chain.proceed(request)
         }
-        var okHttpClient = httpClient.build()
+        val okHttpClient = httpClient.build()
 
         Retrofit.Builder()
             .baseUrl(ApiConstant.BASE_URL)
@@ -52,14 +51,4 @@ val appModule = module {
     single {
         (get<Retrofit>()).create<ApiServices>(ApiServices::class.java)
     }
-//    single {
-//        Room.databaseBuilder(
-//            (androidApplication() as AppApplication),
-//            AppDatabase::class.java,
-//            DbConstant.DB_NAME
-//        ).allowMainThreadQueries().build()
-//        //.addMigrations(migration4To5, migration5To6).build()
-//    }
-//    single { (get() as AppDatabase).userInfoDao() }
-//    single { ReflectionUtil(get()) }
 }

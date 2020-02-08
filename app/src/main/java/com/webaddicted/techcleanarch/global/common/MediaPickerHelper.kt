@@ -12,6 +12,7 @@ import android.provider.DocumentsContract
 import android.provider.MediaStore
 import java.io.File
 import java.util.ArrayList
+
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
@@ -21,7 +22,9 @@ class MediaPickerHelper {
         if (data?.clipData != null) {
             for (i in 0 until data.clipData!!.itemCount) {
                 val uri = data.clipData!!.getItemAt(i).uri
-                selectedImage.add(File(getPath(activity, uri)!!))
+                with(selectedImage) {
+                    add(File(getPath(activity, uri)!!))
+                }
             }
         } else {
             val pathh = getPath(activity, data?.data)
@@ -31,9 +34,13 @@ class MediaPickerHelper {
     }
 
 
-    fun getPath(context: Context, uri: Uri?): String? {
+    private fun getPath(context: Context, uri: Uri?): String? {
         // DocumentProvider
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(context, uri)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT && DocumentsContract.isDocumentUri(
+                context,
+                uri
+            )
+        ) {
             // ExternalStorageProvider
             if (isExternalStorageDocument(uri!!)) {
                 val docId = DocumentsContract.getDocumentId(uri)
@@ -59,12 +66,10 @@ class MediaPickerHelper {
                 val type = split[0]
 
                 var contentUri: Uri? = null
-                if ("image" == type) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                } else if ("video" == type) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                } else if ("audio" == type) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+                when (type) {
+                    "image" -> contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                    "video" -> contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+                    "audio" -> contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
                 }
 
                 val selection = "_id=?"
@@ -93,7 +98,7 @@ class MediaPickerHelper {
      * @param selectionArgs (Optional) Selection arguments used in the query.
      * @return The value of the _data column, which is typically a file path.
      */
-    fun getDataColumn(
+    private fun getDataColumn(
         context: Context, uri: Uri?, selection: String?,
         selectionArgs: Array<String>?
     ): String? {
@@ -106,8 +111,8 @@ class MediaPickerHelper {
             cursor =
                 context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
             if (cursor != null && cursor.moveToFirst()) {
-                val column_index = cursor.getColumnIndexOrThrow(column)
-                return cursor.getString(column_index)
+                val columnIndex = cursor.getColumnIndexOrThrow(column)
+                return cursor.getString(columnIndex)
             }
         } finally {
             cursor?.close()
@@ -120,7 +125,7 @@ class MediaPickerHelper {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is ExternalStorageProvider.
      */
-    fun isExternalStorageDocument(uri: Uri): Boolean {
+    private fun isExternalStorageDocument(uri: Uri): Boolean {
         return "com.android.externalstorage.documents" == uri.authority
     }
 
@@ -128,7 +133,7 @@ class MediaPickerHelper {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is DownloadsProvider.
      */
-    fun isDownloadsDocument(uri: Uri): Boolean {
+    private fun isDownloadsDocument(uri: Uri): Boolean {
         return "com.android.providers.downloads.documents" == uri.authority
     }
 
@@ -136,7 +141,7 @@ class MediaPickerHelper {
      * @param uri The Uri to check.
      * @return Whether the Uri authority is MediaProvider.
      */
-    fun isMediaDocument(uri: Uri): Boolean {
+    private fun isMediaDocument(uri: Uri): Boolean {
         return "com.android.providers.media.documents" == uri.authority
     }
 

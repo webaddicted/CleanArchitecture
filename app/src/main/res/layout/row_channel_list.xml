@@ -18,12 +18,13 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_8sdp"
                 android:layout_marginRight="@dimen/_3sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
 
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginStart="@dimen/_5sdp"
+                android:layout_marginEnd="@dimen/_3sdp">
 
                 <com.webaddicted.techcleanarch.global.customview.CircleImageView
                     android:id="@+id/img_channel_img"
@@ -36,7 +37,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:layout_marginStart="@dimen/_5sdp">
 
                     <TextView
                         android:id="@+id/txt_channel_name"

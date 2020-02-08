@@ -1,4 +1,4 @@
-package com.webaddicted.kotlinproject.view.base
+package com.webaddicted.techcleanarch.view.base
 
 import android.view.LayoutInflater
 import android.view.View
@@ -41,8 +41,7 @@ abstract class BaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onBindViewHolder(@NonNull holder: RecyclerView.ViewHolder, position: Int) {
-        if (holder is ViewHolder)
-            (holder as ViewHolder).binding(position)
+        if (holder is ViewHolder)holder.binding(position)
     }
 
     /**
@@ -52,7 +51,7 @@ abstract class BaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * @return
      */
     protected open fun getPlaceHolder(placeholderType: Int): String {
-        val placeholderArray = mContext.getResources().getStringArray(R.array.image_loader)
+        val placeholderArray = mContext.resources.getStringArray(R.array.image_loader)
         return placeholderArray[placeholderType]
     }
 
@@ -60,19 +59,19 @@ abstract class BaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
      * view holder
      */
     inner class ViewHolder(private val mRowBinding: ViewDataBinding) :
-        RecyclerView.ViewHolder(mRowBinding.getRoot()) {
+        RecyclerView.ViewHolder(mRowBinding.root) {
         /**
          * @param position current item position
          */
         fun binding(position: Int) {
             //            sometime adapter position  is -1 that case handle by position
-            if (getAdapterPosition() >= 0) onBindTo(mRowBinding, getAdapterPosition())
+            if (adapterPosition >= 0) onBindTo(mRowBinding, adapterPosition)
             else onBindTo(mRowBinding, position)
         }
     }
 
     protected open fun onClickListener(view: View?, position: Int){
-        view?.setOnClickListener({ getClickEvent(view, position)})
+        view?.setOnClickListener { getClickEvent(view, position)}
     }
 
     protected open fun getClickEvent(view: View?, position: Int) {

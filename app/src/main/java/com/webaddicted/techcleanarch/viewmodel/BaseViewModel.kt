@@ -1,7 +1,7 @@
 package com.webaddicted.techcleanarch.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.webaddicted.data.sharedPref.PreferenceMgr
+import com.webaddicted.data.sharedpref.PreferenceMgr
 import com.webaddicted.database.dao.UserInfoDao
 import org.koin.core.KoinComponent
 import org.koin.core.inject

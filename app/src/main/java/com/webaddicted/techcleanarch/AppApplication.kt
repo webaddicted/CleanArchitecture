@@ -4,7 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.IntentFilter
 import android.net.ConnectivityManager
-import com.webaddicted.data.sharedPref.PreferenceUtils
+import com.webaddicted.data.sharedpref.PreferenceUtils
 import com.webaddicted.techcleanarch.global.common.NetworkChangeReceiver
 import com.webaddicted.techcleanarch.global.koin.*
 import com.webaddicted.techcleanarch.global.misc.FileUtils
@@ -36,7 +36,7 @@ class AppApplication : Application() {
     }
 
 
-    private fun getModule(): Iterable<Module> {
+    private fun getModule(): List<Module> {
         return listOf(
             appModule,
             viewModelModule,

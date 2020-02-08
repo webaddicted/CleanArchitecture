@@ -1,6 +1,5 @@
 package com.webaddicted.techcleanarch.global.misc
 
-import android.R.attr.data
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -17,6 +16,7 @@ import java.io.*
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.math.min
 
 
 /**
@@ -24,22 +24,12 @@ import java.util.*
  */
 class FileUtils {
 
-    /**
-     * Method to get size of file in kb
-     *
-     * @param file
-     * @return
-     */
-    fun getFileSizeInKb(file: File): Long {
-        return file.length() / 1024
-    }
-
     companion object {
-        private val APP_FOLDER = "kotlinProject"
-        private val SUB_PROFILE = "/profile"
-        private val SEPARATOR = "/"
-        private val JPEG = ".jpeg"
-        private val PNG = ".png"
+        private const val APP_FOLDER = "kotlinProject"
+        private const val SUB_PROFILE = "/profile"
+        private const val SEPARATOR = "/"
+        private const val JPEG = ".jpeg"
+        private const val PNG = ".png"
 
         /**
          * This method is used to create application specific folder on filesystem
@@ -100,12 +90,12 @@ class FileUtils {
         fun getPathFromUri(context: Context, contentUri: Uri): File {
             var res: String? = null
             val proj = arrayOf(MediaStore.Images.Media.DATA)
-            val cursor = context.getContentResolver().query(contentUri, proj, null, null, null)
+            val cursor = context.contentResolver.query(contentUri, proj, null, null, null)
             if (cursor?.moveToFirst()!!) {
-                val column_index = cursor?.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-                res = cursor?.getString(column_index)
+                val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+                res = cursor.getString(columnIndex)
             }
-            cursor?.close()
+            cursor.close()
 
             return File(res)
         }
@@ -118,7 +108,7 @@ class FileUtils {
          */
         fun saveGameThumb(bitmap: Bitmap): File {
             val filename = System.currentTimeMillis().toString() + JPEG
-            val sd = FileUtils.appFolder()
+            val sd = appFolder()
             val dest = File(sd, filename)
             try {
                 val out = FileOutputStream(dest)
@@ -189,63 +179,6 @@ class FileUtils {
             }
 
             return outputFile
-        }
-
-        /**
-         * Method to save bitmap
-         *
-         * @param bmp
-         * @return
-         */
-        fun savebitmap(bmp: Bitmap): File? {
-            val extStorageDirectory = Environment.getExternalStorageDirectory().toString() + "/criiio/profile"
-            var outStream: OutputStream? = null
-
-            // String temp = null;
-            val file = File(extStorageDirectory, System.currentTimeMillis().toString() + "_img.png")
-
-            try {
-                outStream = FileOutputStream(file)
-                bmp.compress(Bitmap.CompressFormat.PNG, 100, outStream)
-                outStream.flush()
-                outStream.close()
-
-            } catch (e: Exception) {
-                e.printStackTrace()
-                return null
-            }
-
-            return file
-        }
-
-        /**
-         * Method to save bitmap
-         *
-         * @param bitmap
-         * @param fileName
-         * @return
-         */
-        fun saveBitmapImg(bitmap: Bitmap, fileName: String): File {
-            var filename = System.currentTimeMillis().toString()
-            if (fileName.endsWith(".png"))
-                filename = filename + PNG
-            else
-                filename = filename + JPEG
-            val dest = File(appFolder(), filename)
-            try {
-                val out = FileOutputStream(dest)
-                if (fileName.endsWith(".png"))
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 90, out)
-                else
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, out)
-
-                out.flush()
-                out.close()
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-
-            return dest
         }
 
 
@@ -389,7 +322,7 @@ class FileUtils {
             val photoH = bmOptions.outHeight
 
             // Determine how much to scale down the image
-            val scaleFactor = Math.min(photoW / targetW, photoH / targetH)
+            val scaleFactor = min(photoW / targetW, photoH / targetH)
 
             // Decode the image file into a Bitmap sized to fill the View
             bmOptions.inJustDecodeBounds = false
@@ -447,7 +380,7 @@ class FileUtils {
          * @param context
          * @param imagePath
          */
-        fun updateGallery(context: Context, imagePath: String?) {
+        private fun updateGallery(context: Context, imagePath: String?) {
             val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
             val f = File(imagePath)
             val contentUri = Uri.fromFile(f)

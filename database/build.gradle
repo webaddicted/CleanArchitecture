@@ -25,14 +25,17 @@ android {
 }
 
 dependencies {
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 //        Room database
-    api "android.arch.persistence.room:runtime:$ROOM_DB_VERSION"
-    annotationProcessor "android.arch.persistence.room:compiler:$ROOM_DB_VERSION"
-    kapt "android.arch.persistence.room:compiler:1.0.0"
+    api "android.arch.persistence.room:runtime:1.0.0"
+    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
+    kapt "android.arch.persistence.room:compiler:1.1.1"
     //Check local database by chrome:/ inspect
-    implementation "com.facebook.stetho:stetho:$STETHO_VERSION"
-    implementation "com.facebook.stetho:stetho-okhttp3:$STETHO_VERSION"
-    implementation "com.facebook.stetho:stetho-urlconnection:$STETHO_VERSION"
+    implementation "com.facebook.stetho:stetho:1.5.1"
+    implementation "com.facebook.stetho:stetho-okhttp3:1.5.1"
+    implementation "com.facebook.stetho:stetho-urlconnection:1.5.1"
     api project(path: ':model')
 }
 kapt {

@@ -1,5 +1,6 @@
-package com.webaddicted.kotlinproject.global.common
+package com.webaddicted.techcleanarch.global.misc
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.graphics.*
@@ -8,11 +9,12 @@ import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
 import android.util.Log
-import com.webaddicted.techcleanarch.global.misc.FileUtils
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.IOException
+import kotlin.math.roundToInt
+
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
@@ -22,17 +24,7 @@ class CompressImage {
         private var mContext: Context? = null
         private val imagePath = Environment.getExternalStorageDirectory().toString() + "/comp/"
 
-        private val filename: String
-            get() {
-                val file = File(Environment.getExternalStorageDirectory().path, "/FirstFood")
-                if (!file.exists()) {
-                    file.mkdirs()
-                }
-                return file.absolutePath + "/" + System.currentTimeMillis() + ".jpg"
-
-            }
-
-        public fun compressImage(context: Activity, imageUri: String): File {
+        fun compressImage(context: Activity, imageUri: String): File {
             mContext = context
             //        String filePath = getRealPathFromURI(imageUri);
             var scaledBitmap: Bitmap? = null
@@ -47,17 +39,21 @@ class CompressImage {
             val maxRatio = maxWidth / maxHeight
 
             if (actualHeight > maxHeight || actualWidth > maxWidth) {
-                if (imgRatio < maxRatio) {
-                    imgRatio = maxHeight / actualHeight
-                    actualWidth = (imgRatio * actualWidth).toInt()
-                    actualHeight = maxHeight.toInt()
-                } else if (imgRatio > maxRatio) {
-                    imgRatio = maxWidth / actualWidth
-                    actualHeight = (imgRatio * actualHeight).toInt()
-                    actualWidth = maxWidth.toInt()
-                } else {
-                    actualHeight = maxHeight.toInt()
-                    actualWidth = maxWidth.toInt()
+                when {
+                    imgRatio < maxRatio -> {
+                        imgRatio = maxHeight / actualHeight
+                        actualWidth = (imgRatio * actualWidth).toInt()
+                        actualHeight = maxHeight.toInt()
+                    }
+                    imgRatio > maxRatio -> {
+                        imgRatio = maxWidth / actualWidth
+                        actualHeight = (imgRatio * actualHeight).toInt()
+                        actualWidth = maxWidth.toInt()
+                    }
+                    else -> {
+                        actualHeight = maxHeight.toInt()
+                        actualWidth = maxWidth.toInt()
+                    }
                 }
             }
 
@@ -106,15 +102,19 @@ class CompressImage {
                 val orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0)
                 Lg.d(TAG, "Exif: $orientation")
                 val matrix = Matrix()
-                if (orientation == 6) {
-                    matrix.postRotate(90f)
-                    Lg.d(TAG, "Exif: $orientation")
-                } else if (orientation == 3) {
-                    matrix.postRotate(180f)
-                    Lg.d(TAG, "Exif: $orientation")
-                } else if (orientation == 8) {
-                    matrix.postRotate(270f)
-                    Lg.d(TAG, "Exif: $orientation")
+                when (orientation) {
+                    6 -> {
+                        matrix.postRotate(90f)
+                        Lg.d(TAG, "Exif: $orientation")
+                    }
+                    3 -> {
+                        matrix.postRotate(180f)
+                        Lg.d(TAG, "Exif: $orientation")
+                    }
+                    8 -> {
+                        matrix.postRotate(270f)
+                        Lg.d(TAG, "Exif: $orientation")
+                    }
                 }
                 scaledBitmap = Bitmap.createBitmap(
                     scaledBitmap,
@@ -129,18 +129,19 @@ class CompressImage {
                 e.printStackTrace()
             }
 
-            return SaveImage(scaledBitmap!!)
+            return saveImage(scaledBitmap!!)
         }
 
+        @SuppressLint("Recycle")
         private fun getRealPathFromURI(contentURI: String): String? {
             val contentUri = Uri.parse(contentURI)
             val cursor = mContext!!.contentResolver.query(contentUri, null, null, null, null)
-            if (cursor == null) {
-                return contentUri.path
+            return if (cursor == null) {
+                contentUri.path
             } else {
                 cursor.moveToFirst()
                 val idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA)
-                return cursor.getString(idx)
+                cursor.getString(idx)
             }
         }
 
@@ -154,8 +155,8 @@ class CompressImage {
             var inSampleSize = 1
 
             if (height > reqHeight || width > reqWidth) {
-                val heightRatio = Math.round(height.toFloat() / reqHeight.toFloat())
-                val widthRatio = Math.round(width.toFloat() / reqWidth.toFloat())
+                val heightRatio = (height.toFloat() / reqHeight.toFloat()).roundToInt()
+                val widthRatio = (width.toFloat() / reqWidth.toFloat()).roundToInt()
                 inSampleSize = if (heightRatio < widthRatio) heightRatio else widthRatio
             }
             val totalPixels = (width * height).toFloat()
@@ -168,19 +169,18 @@ class CompressImage {
             return inSampleSize
         }
 
-        private fun SaveImage(finalBitmap: Bitmap): File {
-            val dirFile: File
+        private fun saveImage(finalBitmap: Bitmap): File {
             Lg.d(TAG, "SaveImage: " + finalBitmap.toString().length)
-            if (imagePath != null) {
+            val dirFile: File = if (imagePath != null) {
                 //            dirFile = new File(Environment.getExternalStorageDirectory() + imagePath);
-                dirFile = FileUtils.subFolder()
+                FileUtils.subFolder()
             } else
-                dirFile = File(mContext!!.cacheDir.toString())
+                File(mContext!!.cacheDir.toString())
             if (!dirFile.exists()) {
                 dirFile.mkdirs()
             }
             val files = File(dirFile, System.currentTimeMillis().toString() + ".jpg")
-            var fileOutputStream: FileOutputStream? = null
+            val fileOutputStream: FileOutputStream?
             try {
                 files.createNewFile()
                 fileOutputStream = FileOutputStream(files)

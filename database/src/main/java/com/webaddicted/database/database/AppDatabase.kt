@@ -8,7 +8,7 @@ import com.webaddicted.database.utils.DbConstant
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
-@Database(entities = arrayOf(UserInfoEntity::class), version = DbConstant.DB_VERSION)
+@Database(entities = [UserInfoEntity::class], version = DbConstant.DB_VERSION,exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun userInfoDao(): UserInfoDao

@@ -1,4 +1,4 @@
-package com.webaddicted.kotlinproject.global.common
+package com.webaddicted.techcleanarch.global.misc
 
 /**
  * Helper class for a list (or tree) of LoggerNodes.
@@ -6,7 +6,7 @@ package com.webaddicted.kotlinproject.global.common
  *
  *
  * When this is set as the head of the list,
- * an instance of it can function as a drop-in replacement for [android.util.Log].
+ * an instance of it can function as a drop-in replacement
  * Most of the methods in this class server only to map a method call in Log to its equivalent
  * in LogNode.
  */
@@ -17,14 +17,13 @@ class Lg {
     // Grabbing the native values from Android's native logging facilities,
     // to make for easy migration and interop.
     companion object {
-        val NONE = -1
-        val VERBOSE = android.util.Log.VERBOSE
-        val DEBUG = android.util.Log.DEBUG
-        val INFO = android.util.Log.INFO
-        val WARN = android.util.Log.WARN
-        val ERROR = android.util.Log.ERROR
-        val ASSERT = android.util.Log.ASSERT
-
+        private const val NONE = -1
+        private const val VERBOSE = android.util.Log.VERBOSE
+        private const val DEBUG = android.util.Log.DEBUG
+        private const val INFO = android.util.Log.INFO
+        private const val WARN = android.util.Log.WARN
+        private const val ERROR = android.util.Log.ERROR
+        private const val ASSERT = android.util.Log.ASSERT
         var ISDEBUG = true
 
         /**

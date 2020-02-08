@@ -1,8 +1,8 @@
 package com.webaddicted.techcleanarch.global.koin
 
 
-import com.webaddicted.data.sharedPref.PreferenceMgr
-import com.webaddicted.data.sharedPref.PreferenceUtils
+import com.webaddicted.data.sharedpref.PreferenceMgr
+import com.webaddicted.data.sharedpref.PreferenceUtils
 import com.webaddicted.techcleanarch.global.misc.MediaPickerUtils
 import org.koin.dsl.module
 

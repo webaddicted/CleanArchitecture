@@ -7,13 +7,13 @@ import java.io.Serializable
  */
 class NewsChanelRespo : Serializable {
     @SerializedName("status")
-    var status: String = "";
+    var status: String = ""
     @SerializedName("sources")
     var sources = ArrayList<Source>()
 
     open class Source : Serializable {
         @SerializedName("id")
-        var id: String = "";
+        var id: String = ""
         @SerializedName("name")
         var name: String = ""
         @SerializedName("description")

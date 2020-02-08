@@ -5,10 +5,11 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Url
+
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
 interface ApiServices {
     @GET
-    fun getChannelListName(@Url strUrl: String): Deferred<Response<NewsChanelRespo>>
+     fun getChannelListName(@Url strUrl: String): Deferred<Response<NewsChanelRespo>>
 }

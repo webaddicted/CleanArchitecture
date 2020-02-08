@@ -2,7 +2,7 @@ package com.webaddicted.techcleanarch.view.adapter
 
 import androidx.databinding.ViewDataBinding
 import com.webaddicted.model.news.NewsChanelRespo
-import com.webaddicted.kotlinproject.view.base.BaseAdapter
+import com.webaddicted.techcleanarch.view.base.BaseAdapter
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.databinding.RowChannelListBinding
 import com.webaddicted.techcleanarch.global.misc.showImage
@@ -22,13 +22,12 @@ class NewsAdapter(private var newsList: ArrayList<NewsChanelRespo.Source>?) : Ba
 
     override fun onBindTo(rowBinding: ViewDataBinding, position: Int) {
         if (rowBinding is RowChannelListBinding) {
-            val mRowBinding = rowBinding as RowChannelListBinding
-            var source = newsList?.get(position)
+            val source = newsList?.get(position)
 
-            mRowBinding.txtChannelName.text = source?.name
-            mRowBinding.txtChannelDesc.text = source?.description
+            rowBinding.txtChannelName.text = source?.name
+            rowBinding.txtChannelDesc.text = source?.description
             val stringBuilder = "https://besticon-demo.herokuapp.com/icon?url=" + source?.url + "&size=64..64..120"
-            mRowBinding.imgChannelImg.showImage(stringBuilder,  getPlaceHolder(0))
+            rowBinding.imgChannelImg.showImage(stringBuilder,  getPlaceHolder(0))
         }
     }
 

@@ -15,12 +15,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.webaddicted.kotlinproject.global.common.Lg
+import com.webaddicted.techcleanarch.global.misc.Lg
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.global.common.NetworkChangeReceiver
 import com.webaddicted.techcleanarch.global.misc.*
 import org.koin.android.ext.android.inject
-import java.io.File
 
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
@@ -38,7 +37,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.hide()
         fullScreen()
         GlobalUtility.hideKeyboard(this)
-        var layoutResId = getLayout()
+        val layoutResId = getLayout()
         var binding: ViewDataBinding? = null
         if (layoutResId != 0) {
             try {
@@ -65,7 +64,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
 
     protected fun setNavigationColor(color: Int) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window?.setNavigationBarColor(color);
+            window?.navigationBarColor = color
         }
     }
 
@@ -79,7 +78,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
      * @return
      */
     protected fun getPlaceHolder(placeholderType: Int): String {
-        val placeholderArray = getResources().getStringArray(R.array.image_loader)
+        val placeholderArray = resources.getStringArray(R.array.image_loader)
         return placeholderArray[placeholderType]
     }
 
@@ -155,7 +154,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
                 try {
                     isNetworkConnected(isConnected)
                 } catch (exception: Exception) {
-                    Lg.d(TAG, "getNetworkStateReceiver : " + exception.toString())
+                    Lg.d(TAG, "getNetworkStateReceiver : $exception")
                 }
             }
         })
@@ -165,8 +164,8 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
 
     protected fun showInternetSnackbar(internetConnected: Boolean, txtNoInternet: TextView) {
         if (internetConnected) {
-            txtNoInternet.setText(getString(R.string.back_online))
-            val color = arrayOf<ColorDrawable>(
+            txtNoInternet.text = getString(R.string.back_online)
+            val color = arrayOf(
                 ColorDrawable(resources.getColor(R.color.red_ff090b)),
                 ColorDrawable(resources.getColor(R.color.green_00de4a))
             )

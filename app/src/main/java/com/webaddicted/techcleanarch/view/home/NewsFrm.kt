@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.webaddicted.model.news.NewsChanelRespo
-import com.webaddicted.kotlinproject.view.base.ScrollListener
+import com.webaddicted.techcleanarch.view.base.ScrollListener
 import com.webaddicted.network.apiutils.ApiResponse
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.databinding.FrmNewsBinding
@@ -72,7 +72,7 @@ class NewsFrm : BaseFragment() {
         newsAdapter = NewsAdapter(newsList)
         mBinding.rvNewsChannel.layoutManager = LinearLayoutManager(activity)
         mBinding.rvNewsChannel.addOnScrollListener(object :
-            ScrollListener(mBinding.rvNewsChannel.getLayoutManager() as LinearLayoutManager) {
+            ScrollListener(mBinding.rvNewsChannel.layoutManager as LinearLayoutManager) {
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView) {
                 mPageCount++
                 callApi()
@@ -82,7 +82,7 @@ class NewsFrm : BaseFragment() {
     }
 
     private fun callApi() {
-        mViewModel.getNewsChannelLiveData()?.observe(this, channelObserver)
+        mViewModel.getNewsChannelLiveData().observe(this, channelObserver)
         mViewModel.newsChannelApi(
             "https://newsapi.org/v2/sources?language=en&page=" + mPageCount + "&pageSize=" + AppConstant.PAGINATION_SIZE + "&apiKey=" + getString(
                 R.string.news_api_key

@@ -11,18 +11,17 @@ import com.webaddicted.techcleanarch.global.misc.isNetworkAvailable
  */
 class NetworkChangeReceiver : BroadcastReceiver() {
     companion object {
-        private val TAG = NetworkChangeReceiver::class.java.simpleName
         /**
          * The constant connectivityReceiverListener.
          */
         var connectivityReceiverListener: ConnectivityReceiverListener? = null
         fun isInternetAvailable(connectivityReceiverListener: ConnectivityReceiverListener?){
-            this.connectivityReceiverListener = connectivityReceiverListener;
+            this.connectivityReceiverListener = connectivityReceiverListener
         }
 
     }
     override fun onReceive(context: Context, intent: Intent) {
-        if (context?.isNetworkAvailable()) {
+        if (context.isNetworkAvailable()) {
             if (connectivityReceiverListener != null)
                 connectivityReceiverListener!!.onNetworkConnectionChanged(true)
         } else {

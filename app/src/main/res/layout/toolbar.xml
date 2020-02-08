@@ -35,6 +35,7 @@
                         android:layout_width="@dimen/_50sdp"
                         android:layout_height="@dimen/_40sdp"
                         android:layout_centerVertical="true"
+                        android:contentDescription="@string/back_online"
                         android:paddingTop="@dimen/_10sdp"
                         android:paddingBottom="@dimen/_8sdp"
                         android:src="@drawable/ic_back"
@@ -58,11 +59,14 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/_8sdp"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/_8sdp">
 
                         <ImageView
                             android:id="@+id/img_profile"
                             android:layout_width="@dimen/_23sdp"
+                            android:contentDescription="@string/my_profile"
                             android:layout_height="@dimen/_23sdp"
                             android:src="@drawable/ic_profile"
                             android:tint="@color/gray_CDCDCD"
