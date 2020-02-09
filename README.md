@@ -2,6 +2,12 @@
 
 Kotlin android application example with MVVM pattern, android architecture components, and kotlin coroutine.
 
+Screenshot
+-----------
+
+![Demo screenshot](screenshot/start_project.gif "gif demo")
+
+
 
 ![graph](https://github.com/webaddicted/CleanArchitecture/blob/master/screenshot/final_architecture.png)
 
