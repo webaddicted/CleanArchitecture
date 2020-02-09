@@ -2,6 +2,11 @@
 
 Kotlin android application example with MVVM pattern, android architecture components, and kotlin coroutine.
 
+# Release 2.0 (09/FEB/2020)
+
+https://github.com/webaddicted/CleanArchitecture/archive/2.0.zip
+
+
 # Release 1.0 (09/FEB/2020)
 
 https://github.com/webaddicted/CleanArchitecture/archive/1.0.zip
