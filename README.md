@@ -7,9 +7,11 @@ Screenshot
 
 ![Demo screenshot](screenshot/start_project.gif "gif demo")
 
+Clean Architecture
+-----------
 
+![graph](https://github.com/webaddicted/CleanArchitecture/blob/master/screenshot/clean.jpg)
 
-![graph](https://github.com/webaddicted/CleanArchitecture/blob/master/screenshot/final_architecture.png)
 
 
 # Release 2.0 (09/FEB/2020)
@@ -31,7 +33,10 @@ This release cover following feature :
 6) Koin
 7) Room DB
 
-![graph](https://github.com/webaddicted/CleanArchitecture/blob/master/screenshot/clean.jpg)
+MVVM Architecture
+-----------
+
+![graph](https://github.com/webaddicted/CleanArchitecture/blob/master/screenshot/final_architecture.png)
 
 <b> LiveData </b>
 is basically a data holder and it is used to observe the changes of a particular view and then update the corresponding change. What is the difference between livedata and mutablelivedata? -> LiveData is immutable while MutableLiveData is mutable.
