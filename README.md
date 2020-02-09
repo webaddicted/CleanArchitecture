@@ -3,7 +3,7 @@
 Kotlin android application example with MVVM pattern, android architecture components, and kotlin coroutine.
 
 
-![graph](https://raw.githubusercontent.com/miquelbeltran/android-architecture-sample/master/project.dot.png)
+![graph](https://github.com/webaddicted/CleanArchitecture/blob/master/screenshot/final_architecture.png)
 
 
 # Release 2.0 (09/FEB/2020)
@@ -25,6 +25,7 @@ This release cover following feature :
 6) Koin
 7) Room DB
 
+![graph](https://github.com/webaddicted/CleanArchitecture/blob/master/screenshot/clean.jpg)
 
 <b> LiveData </b>
 is basically a data holder and it is used to observe the changes of a particular view and then update the corresponding change. What is the difference between livedata and mutablelivedata? -> LiveData is immutable while MutableLiveData is mutable.
