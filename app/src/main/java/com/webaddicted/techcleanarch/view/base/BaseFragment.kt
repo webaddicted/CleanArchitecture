@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import com.webaddicted.network.utils.ApiResponse
 import com.webaddicted.network.utils.ApiStatus
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.global.misc.GlobalUtility
@@ -57,20 +58,6 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     }
 
     protected fun <T> apiResponseHandler(view: View, response: ApiResponse<T>) {
-        when (response.status) {
-            ApiResponse.Status.LOADING -> {
-                showApiLoader()
-            }
-            ApiResponse.Status.ERROR -> {
-                hideApiLoader()
-                if (response.errorMessage != null && response.errorMessage?.length!! > 0)
-                    ValidationHelper.showSnackBar(view, response.errorMessage!!)
-                else activity?.showToast(getString(R.string.something_went_wrong))
-            }
-        }
-    }
-
-    protected fun <T> apiResponseHandler(view: View, response: com.webaddicted.network.utils.ApiResponse<T>) {
         when (response.status) {
             ApiStatus.LOADING -> {
                 showApiLoader()
