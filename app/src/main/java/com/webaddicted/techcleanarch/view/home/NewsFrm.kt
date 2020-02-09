@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.webaddicted.model.news.NewsChanelRespo
 import com.webaddicted.techcleanarch.view.base.ScrollListener
-import com.webaddicted.network.apiutils.ApiResponse
+import com.webaddicted.network.utils.ApiStatus
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.databinding.FrmNewsBinding
 import com.webaddicted.techcleanarch.global.misc.AppConstant
@@ -19,6 +19,7 @@ import com.webaddicted.techcleanarch.view.adapter.NewsAdapter
 import com.webaddicted.techcleanarch.view.base.BaseFragment
 import com.webaddicted.techcleanarch.viewmodel.NewsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
@@ -82,31 +83,25 @@ class NewsFrm : BaseFragment() {
     }
 
     private fun callApi() {
-        mViewModel.getNewsChannelLiveData().observe(this, channelObserver)
-        mViewModel.newsChannelApi(
+        mViewModel.newsRespo.observe(this, Observer { response ->
+            apiResponseHandler(mBinding.parent, response)
+            when (response.status) {
+                ApiStatus.SUCCESS -> {
+                    hideApiLoader()
+                    if (newsList == null || newsList?.size == 0) newsList = response.data!!.sources
+                    else newsList?.addAll(response.data!!.sources)
+                    newsAdapter.notifyAdapter(newsList!!)
+                    if (newsList == null || newsList?.size == 0)
+                        mBinding.txtNoDataFound.visible()
+                    else mBinding.txtNoDataFound.gone()
+                }
+            }
+        })
+        mViewModel.getNewsChannelList(
             "https://newsapi.org/v2/sources?language=en&page=" + mPageCount + "&pageSize=" + AppConstant.PAGINATION_SIZE + "&apiKey=" + getString(
                 R.string.news_api_key
             )
         )
-    }
-
-    private val channelObserver: Observer<ApiResponse<NewsChanelRespo>> by lazy {
-        Observer { response: ApiResponse<NewsChanelRespo> -> handleLoginResponse(response) }
-    }
-
-    private fun handleLoginResponse(response: ApiResponse<NewsChanelRespo>) {
-        apiResponseHandler(mBinding.parent, response)
-        when (response.status) {
-            ApiResponse.Status.SUCCESS -> {
-                hideApiLoader()
-                if (newsList == null || newsList?.size == 0) newsList = response.data!!.sources
-                else newsList?.addAll(response.data!!.sources)
-                newsAdapter.notifyAdapter(newsList!!)
-                if (newsList == null || newsList?.size == 0)
-                    mBinding.txtNoDataFound.visible()
-                else mBinding.txtNoDataFound.gone()
-            }
-        }
     }
 
     /**

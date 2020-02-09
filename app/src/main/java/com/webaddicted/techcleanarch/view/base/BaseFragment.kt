@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.webaddicted.network.apiutils.ApiResponse
+import com.webaddicted.network.utils.ApiStatus
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.global.misc.GlobalUtility
 import com.webaddicted.techcleanarch.global.misc.MediaPickerUtils
@@ -69,6 +69,22 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+
+    protected fun <T> apiResponseHandler(view: View, response: com.webaddicted.network.utils.ApiResponse<T>) {
+        when (response.status) {
+            ApiStatus.LOADING -> {
+                showApiLoader()
+            }
+            ApiStatus.ERROR-> {
+                hideApiLoader()
+                if (response.message!= null && response.message?.length!! > 0)
+                    ValidationHelper.showSnackBar(view, response.message!!)
+                else activity?.showToast(getString(R.string.something_went_wrong))
+            }
+        }
+    }
+
+
 
     override fun onResume() {
         super.onResume()
