@@ -1,6 +1,7 @@
 package com.webaddicted.techcleanarch.view.base
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import com.webaddicted.techcleanarch.global.misc.GlobalUtility
 import com.webaddicted.techcleanarch.global.misc.MediaPickerUtils
 import com.webaddicted.techcleanarch.global.misc.ValidationHelper
 import com.webaddicted.techcleanarch.global.misc.showToast
+import com.webaddicted.techcleanarch.view.base.BaseActivity.Companion.TAG
 import com.webaddicted.techcleanarch.view.dialog.LoaderDialog
 import org.koin.android.ext.android.inject
 
@@ -46,16 +48,24 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     }
 
     protected fun showApiLoader() {
-        if (loaderDialog != null) {
-            val fragment = fragmentManager?.findFragmentByTag(LoaderDialog.TAG)
-            if (fragment != null) fragmentManager?.beginTransaction()?.remove(fragment)?.commit()
-            fragmentManager?.let { loaderDialog?.show(it, LoaderDialog.TAG) }
+        try {
+            if (loaderDialog != null) {
+                val fragment = fragmentManager?.findFragmentByTag(LoaderDialog.TAG)
+                if (fragment != null) fragmentManager?.beginTransaction()?.remove(fragment)?.commit()
+                fragmentManager?.let { loaderDialog?.show(it, LoaderDialog.TAG) }
+            }
+        }catch (exp : Exception){
+            Log.d(TAG, "ok"+exp)
         }
     }
 
     protected fun hideApiLoader() {
+        try {
         if (loaderDialog != null && loaderDialog?.isVisible!!) loaderDialog?.dismiss()
-    }
+        }catch (exp : Exception){
+            Log.d(TAG, "ok"+exp)
+        }
+        }
 
     protected fun <T> apiResponseHandler(view: View, response: ApiResponse<T>) {
         when (response.status) {
