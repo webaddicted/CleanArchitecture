@@ -18,6 +18,15 @@ Clean Architecture
 
 https://github.com/webaddicted/CleanArchitecture/archive/2.0.zip
 
+This release cover following feature :
+
+1) Clean Architecture
+2) Modular coding
+3) Simplified api calling using coroutine
+4) MVVM (MODEL - VIEW - VIEWMODEL)
+5) Koin
+6) Room DB
+
 
 # Release 1.0 (09/FEB/2020)
 
