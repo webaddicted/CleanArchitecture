@@ -2,6 +2,7 @@ package com.webaddicted.techcleanarch.view.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -43,7 +44,7 @@ class NewsFrm : BaseFragment() {
         return R.layout.frm_news
     }
 
-    override fun onViewsInitialized(binding: ViewDataBinding?, view: View) {
+    override fun initUI(binding: ViewDataBinding?, view: View) {
         mBinding = binding as FrmNewsBinding
         init()
         clickListener()
@@ -53,7 +54,7 @@ class NewsFrm : BaseFragment() {
     private fun init() {
         mBinding.toolbar.imgProfile.visible()
         mBinding.toolbar.txtToolbarTitle.text = resources.getString(R.string.news_channel)
-        mBinding.parent.setBackgroundColor(resources.getColor(R.color.grey_light))
+        mBinding.parent.setBackgroundColor(ContextCompat.getColor(activity!!,R.color.grey_light))
         callApi()
     }
 

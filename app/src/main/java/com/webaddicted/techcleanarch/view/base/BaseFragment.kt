@@ -24,10 +24,10 @@ import org.koin.android.ext.android.inject
  */
 abstract class BaseFragment : Fragment(), View.OnClickListener {
     private lateinit var mBinding: ViewDataBinding
-    private var loaderDialog: LoaderDialog? = null
+
     protected val mediaPicker: MediaPickerUtils by inject()
     abstract fun getLayout(): Int
-    protected abstract fun onViewsInitialized(binding: ViewDataBinding?, view: View)
+    protected abstract fun initUI(binding: ViewDataBinding?, view: View)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,49 +39,24 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        onViewsInitialized(mBinding, view)
+        initUI(mBinding, view)
         super.onViewCreated(view, savedInstanceState)
-        if (loaderDialog == null) {
-            loaderDialog = LoaderDialog.dialog()
-            loaderDialog?.isCancelable = false
-        }
-    }
 
-    protected fun showApiLoader() {
-        try {
-            if (loaderDialog != null) {
-                val fragment = fragmentManager?.findFragmentByTag(LoaderDialog.TAG)
-                if (fragment != null) fragmentManager?.beginTransaction()?.remove(fragment)?.commit()
-                fragmentManager?.let { loaderDialog?.show(it, LoaderDialog.TAG) }
-            }
-        }catch (exp : Exception){
-            Log.d(TAG, "ok"+exp)
-        }
     }
-
-    protected fun hideApiLoader() {
-        try {
-        if (loaderDialog != null && loaderDialog?.isVisible!!) loaderDialog?.dismiss()
-        }catch (exp : Exception){
-            Log.d(TAG, "ok"+exp)
-        }
-        }
 
     protected fun <T> apiResponseHandler(view: View, response: ApiResponse<T>) {
         when (response.status) {
             ApiStatus.LOADING -> {
                 showApiLoader()
             }
-            ApiStatus.ERROR-> {
+            ApiStatus.ERROR -> {
                 hideApiLoader()
-                if (response.message!= null && response.message?.length!! > 0)
+                if (response.message != null && response.message?.length!! > 0)
                     ValidationHelper.showSnackBar(view, response.message!!)
                 else activity?.showToast(getString(R.string.something_went_wrong))
             }
         }
     }
-
-
 
     override fun onResume() {
         super.onResume()
@@ -132,6 +107,9 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View) {
     }
 
+    protected fun hideApiLoader() = (activity as BaseActivity).hideApiLoader()
+
+    protected fun showApiLoader() = (activity as BaseActivity).showApiLoader()
 
     fun checkStoragePermission(): ArrayList<String> {
         return (activity as BaseActivity).checkStoragePermission()

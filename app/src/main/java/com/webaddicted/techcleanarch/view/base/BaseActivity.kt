@@ -8,6 +8,7 @@ import android.graphics.drawable.TransitionDrawable
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
@@ -20,6 +21,7 @@ import com.webaddicted.techcleanarch.global.misc.Lg
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.global.common.NetworkChangeReceiver
 import com.webaddicted.techcleanarch.global.misc.*
+import com.webaddicted.techcleanarch.view.dialog.LoaderDialog
 import org.koin.android.ext.android.inject
 
 /**
@@ -27,11 +29,13 @@ import org.koin.android.ext.android.inject
  */
 abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
     private val mediaPicker: MediaPickerUtils by inject()
-
+    private var loaderDialog: LoaderDialog? = null
     companion object {
         val TAG = BaseActivity::class.java.simpleName
     }
+    abstract fun getLayout(): Int
 
+    abstract fun initUI(binding: ViewDataBinding)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         overridePendingTransition(R.anim.trans_left_in, R.anim.trans_left_out)
@@ -48,9 +52,12 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
                 e.printStackTrace()
             }
         }
+        if (loaderDialog == null) {
+            loaderDialog = LoaderDialog.dialog()
+            loaderDialog?.isCancelable = false
+        }
         getNetworkStateReceiver()
     }
-
     private fun fullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = window
@@ -69,9 +76,6 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    abstract fun getLayout(): Int
-
-    abstract fun initUI(binding: ViewDataBinding)
     /**
      * placeholder type for image
      *
@@ -151,17 +155,36 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
     private fun getNetworkStateReceiver() {
         NetworkChangeReceiver.isInternetAvailable(object :
             NetworkChangeReceiver.ConnectivityReceiverListener {
-            override fun onNetworkConnectionChanged(isConnected: Boolean) {
+            override fun onNetworkConnectionChanged(networkConnected: Boolean) {
                 try {
-                    isNetworkConnected(isConnected)
+                    isNetworkConnected(networkConnected)
                 } catch (exception: Exception) {
                     Lg.d(TAG, "getNetworkStateReceiver : $exception")
                 }
             }
         })
     }
+    fun showApiLoader() {
+        try {
+            if (loaderDialog != null) {
+                val fragment = supportFragmentManager.findFragmentByTag(LoaderDialog.TAG)
+                if (fragment != null) supportFragmentManager.beginTransaction().remove(fragment).commit()
+                supportFragmentManager.let { loaderDialog?.show(it, LoaderDialog.TAG) }
+            }
+        } catch (exp: Exception) {
+            Log.d(TAG, "ok" + exp)
+        }
+    }
 
-    abstract fun isNetworkConnected(isConnected: Boolean)
+    fun hideApiLoader() {
+        try {
+            if (loaderDialog != null && loaderDialog?.isVisible!!) loaderDialog?.dismiss()
+        } catch (exp: Exception) {
+            Log.d(TAG, "ok" + exp)
+        }
+    }
+
+    abstract fun isNetworkConnected(networkConnected: Boolean)
 
     protected fun showInternetSnackbar(internetConnected: Boolean, txtNoInternet: TextView) {
         if (internetConnected) {

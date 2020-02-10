@@ -27,7 +27,8 @@ class HomeActivity : BaseActivity() {
         return R.layout.activity_common
     }
 
-    override fun isNetworkConnected(isInternetConnected: Boolean) {
+    override fun isNetworkConnected(
+        isInternetConnected: Boolean) {
         showInternetSnackbar(isInternetConnected, mBinding.txtNoInternet)
     }
 
