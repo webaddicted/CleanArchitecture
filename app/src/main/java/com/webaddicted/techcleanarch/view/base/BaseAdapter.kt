@@ -17,10 +17,6 @@ abstract class BaseAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     protected val mContext = AppApplication.context
     protected abstract fun getListSize(): Int?
 
-    companion object {
-        private val TAG = BaseAdapter::class.java.simpleName
-    }
-
     override fun getItemCount(): Int {
         return getListSize()!!
     }

@@ -4,19 +4,18 @@ import androidx.lifecycle.MutableLiveData
 import com.webaddicted.data.repo.NewsRepository
 import com.webaddicted.model.news.NewsChanelRespo
 import com.webaddicted.network.utils.ApiResponse
-import com.webaddicted.network.utils.ApiStatus
 import com.webaddicted.network.utils.Coroutines
 
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
 class NewsViewModel( private val projectRepository: NewsRepository) : BaseViewModel(){
-    var newsRespo: MutableLiveData<ApiResponse<NewsChanelRespo>> = MutableLiveData<ApiResponse<NewsChanelRespo>>()
+    var newsRespo= MutableLiveData<ApiResponse<NewsChanelRespo>>()
 
     fun getNewsChannelList(strUrl: String) {
         Coroutines.main {
-            newsRespo?.postValue(ApiResponse(ApiStatus.LOADING,"", NewsChanelRespo(), 0))
-            newsRespo?.postValue(projectRepository.getNewsChannelList(strUrl))
+            newsRespo.postValue(ApiResponse.loading())
+            newsRespo.postValue(projectRepository.getNewsChannelList(strUrl))
         }
     }
 

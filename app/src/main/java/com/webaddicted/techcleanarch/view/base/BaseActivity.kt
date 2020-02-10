@@ -12,6 +12,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -38,7 +39,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         fullScreen()
         GlobalUtility.hideKeyboard(this)
         val layoutResId = getLayout()
-        var binding: ViewDataBinding? = null
+        val binding: ViewDataBinding?
         if (layoutResId != 0) {
             try {
                 binding = DataBindingUtil.setContentView(this, layoutResId)
@@ -166,8 +167,8 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         if (internetConnected) {
             txtNoInternet.text = getString(R.string.back_online)
             val color = arrayOf(
-                ColorDrawable(resources.getColor(R.color.red_ff090b)),
-                ColorDrawable(resources.getColor(R.color.green_00de4a))
+                ColorDrawable(ContextCompat.getColor(this,R.color.red_ff090b)),
+                ColorDrawable(ContextCompat.getColor(this,R.color.green_00de4a))
             )
             val trans = TransitionDrawable(color)
             txtNoInternet.background = (trans)
