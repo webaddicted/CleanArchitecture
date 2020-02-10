@@ -60,7 +60,7 @@ class GlobalUtility {
                 { view, year, month, dayOfMonth ->
                     val monthValue = month + 1
                     var day = ""
-                    var dayMonth = ""
+                    var dayMonth: String
                     day = if (dayOfMonth <= 9) "0$dayOfMonth"
                     else dayOfMonth.toString()
                     dayMonth = if (monthValue <= 9) "0$monthValue"
@@ -81,8 +81,8 @@ class GlobalUtility {
                     R.style.TimePicker,
                     { view, year, month, dayOfMonth ->
                         val monthValue = month + 1
-                        var day = ""
-                        var dayMonth= ""
+                        var day: String
+                        var dayMonth: String
                         day = if (dayOfMonth <= 9) "0$dayOfMonth"
                         else dayOfMonth.toString()
                         dayMonth = if (monthValue <= 9) "0$monthValue"

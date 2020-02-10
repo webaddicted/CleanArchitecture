@@ -6,7 +6,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.webaddicted.techcleanarch"
+     applicationId "com.webaddicted.techcleanarch"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
@@ -17,6 +17,23 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "versionCode"
+    flavorDimensions "appId"
+    productFlavors {
+        QA {
+            dimension "versionCode"
+            dimension "appId"
+            buildConfigField "boolean", "IS_QA", "true"
+            buildConfigField "String", "BASE_URL", '"http://tutorials.jenkov.com/"'
+        }
+        UAT {
+            dimension "versionCode"
+            dimension "appId"
+            buildConfigField "boolean", "IS_QA", "false"
+            buildConfigField "String", "BASE_URL", '"http://tutorials.jenkov.com/"'
         }
     }
     dataBinding {
