@@ -12,7 +12,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
-
+import com.facebook.stetho.Stetho;
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
@@ -26,6 +26,7 @@ class AppApplication : Application() {
         super.onCreate()
         context = this
         FileUtils.createApplicationFolder()
+        Stetho.initializeWithDefaults(this)
         PreferenceUtils.getInstance(this)
         startKoin {
             androidLogger()
