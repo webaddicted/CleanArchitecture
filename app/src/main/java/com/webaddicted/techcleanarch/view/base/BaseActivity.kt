@@ -20,6 +20,7 @@ import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.global.common.NetworkChangeReceiver
 import com.webaddicted.techcleanarch.global.misc.*
 import com.webaddicted.techcleanarch.view.dialog.LoaderDialog
+import com.webaddicted.techcleanarch.view.splash.SplashActivity
 import org.koin.android.ext.android.inject
 
 /**
@@ -87,6 +88,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
             NetworkChangeReceiver.ConnectivityReceiverListener {
             override fun onNetworkConnectionChanged(networkConnected: Boolean) {
                 try {
+                    if(!(this@BaseActivity is SplashActivity))
                     GlobalUtility.initSnackBar(this@BaseActivity, networkConnected)
                 } catch (exception: Exception) {
                     exception.printStackTrace()
