@@ -3,6 +3,7 @@ package com.webaddicted.techcleanarch.global.common
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.webaddicted.techcleanarch.global.misc.GlobalUtility
 import com.webaddicted.techcleanarch.global.misc.isNetworkAvailable
 
 /**
@@ -23,10 +24,10 @@ class NetworkChangeReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (context.isNetworkAvailable()) {
             if (connectivityReceiverListener != null)
-                connectivityReceiverListener!!.onNetworkConnectionChanged(true)
+                connectivityReceiverListener?.onNetworkConnectionChanged(true)
         } else {
             if (connectivityReceiverListener != null)
-                connectivityReceiverListener!!.onNetworkConnectionChanged(false)
+                connectivityReceiverListener?.onNetworkConnectionChanged(false)
         }
     }
 
@@ -38,8 +39,8 @@ class NetworkChangeReceiver : BroadcastReceiver() {
         /**
          * This method is invoked bu receiver when internet connection enables or disables.
          *
-         * @param isConnected network connectivity status.
+         * @param networkConnected network connectivity status.
          */
-        fun onNetworkConnectionChanged(isConnected: Boolean)
+        fun onNetworkConnectionChanged(networkConnected: Boolean)
     }
 }

@@ -33,9 +33,9 @@ dependencies {
 //    annotationProcessor "android.arch.persistence.room:compiler:1.0.0"
     kapt "android.arch.persistence.room:compiler:1.1.1"
     //Check local database by chrome:/ inspect
-    implementation "com.facebook.stetho:stetho:1.5.1"
-    implementation "com.facebook.stetho:stetho-okhttp3:1.5.1"
-    implementation "com.facebook.stetho:stetho-urlconnection:1.5.1"
+    api "com.facebook.stetho:stetho:1.5.1"
+    api "com.facebook.stetho:stetho-okhttp3:1.5.1"
+    api "com.facebook.stetho:stetho-urlconnection:1.5.1"
     api project(path: ':model')
 }
 kapt {

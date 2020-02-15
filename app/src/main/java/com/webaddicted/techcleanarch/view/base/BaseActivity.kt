@@ -1,23 +1,21 @@
 package com.webaddicted.techcleanarch.view.base
 
-import android.Manifest
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.graphics.drawable.TransitionDrawable
 import android.os.Build
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.WindowManager
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
-import com.webaddicted.techcleanarch.global.misc.Lg
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.webaddicted.network.utils.ApiResponse
+import com.webaddicted.network.utils.ApiStatus
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.global.common.NetworkChangeReceiver
 import com.webaddicted.techcleanarch.global.misc.*
@@ -30,9 +28,11 @@ import org.koin.android.ext.android.inject
 abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
     private val mediaPicker: MediaPickerUtils by inject()
     private var loaderDialog: LoaderDialog? = null
+
     companion object {
         val TAG = BaseActivity::class.java.simpleName
     }
+
     abstract fun getLayout(): Int
 
     abstract fun initUI(binding: ViewDataBinding)
@@ -47,9 +47,9 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         if (layoutResId != 0) {
             try {
                 binding = DataBindingUtil.setContentView(this, layoutResId)
-                initUI(binding)
-            } catch (e: Exception) {
-                e.printStackTrace()
+                binding?.let { initUI(it) }
+            } catch (exception: Exception) {
+                exception.printStackTrace()
             }
         }
         if (loaderDialog == null) {
@@ -58,6 +58,7 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         }
         getNetworkStateReceiver()
     }
+
     private fun fullScreen() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             val window = window
@@ -77,6 +78,25 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     /**
+     * broadcast receiver for check internet connectivity
+     *
+     * @return
+     */
+    private fun getNetworkStateReceiver() {
+        NetworkChangeReceiver.isInternetAvailable(object :
+            NetworkChangeReceiver.ConnectivityReceiverListener {
+            override fun onNetworkConnectionChanged(networkConnected: Boolean) {
+                try {
+                    GlobalUtility.initSnackBar(this@BaseActivity, networkConnected)
+                } catch (exception: Exception) {
+                    exception.printStackTrace()
+                    Lg.d(TAG, "getNetworkStateReceiver : $exception")
+                }
+            }
+        })
+    }
+
+    /**
      * placeholder type for image
      *
      * @param placeholderType position of string array placeholder
@@ -93,21 +113,6 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(v: View) {}
-
-   fun checkStoragePermission(): ArrayList<String> {
-        val multiplePermission = ArrayList<String>()
-        multiplePermission.add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        multiplePermission.add(Manifest.permission.READ_EXTERNAL_STORAGE)
-        multiplePermission.add(Manifest.permission.CAMERA)
-        return multiplePermission
-    }
-
-    fun checkLocationPermission(): ArrayList<String> {
-        val multiplePermission = ArrayList<String>()
-        multiplePermission.add(Manifest.permission.ACCESS_FINE_LOCATION)
-        multiplePermission.add(Manifest.permission.ACCESS_COARSE_LOCATION)
-        return multiplePermission
-    }
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -134,7 +139,6 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         if (isEnableBackStack)
             fragmentTransaction.addToBackStack(fragment.javaClass.simpleName)
         fragmentTransaction.commitAllowingStateLoss()
-
     }
 
     fun navigateAddFragment(layoutContainer: Int, fragment: Fragment, isEnableBackStack: Boolean) {
@@ -147,23 +151,6 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
         fragmentTransaction.commitAllowingStateLoss()
     }
 
-    /**
-     * broadcast receiver for check internet connectivity
-     *
-     * @return
-     */
-    private fun getNetworkStateReceiver() {
-        NetworkChangeReceiver.isInternetAvailable(object :
-            NetworkChangeReceiver.ConnectivityReceiverListener {
-            override fun onNetworkConnectionChanged(networkConnected: Boolean) {
-                try {
-                    isNetworkConnected(networkConnected)
-                } catch (exception: Exception) {
-                    Lg.d(TAG, "getNetworkStateReceiver : $exception")
-                }
-            }
-        })
-    }
     fun showApiLoader() {
         try {
             if (loaderDialog != null) {
@@ -171,38 +158,51 @@ abstract class BaseActivity : AppCompatActivity(), View.OnClickListener {
                 if (fragment != null) supportFragmentManager.beginTransaction().remove(fragment).commit()
                 supportFragmentManager.let { loaderDialog?.show(it, LoaderDialog.TAG) }
             }
-        } catch (exp: Exception) {
-            Log.d(TAG, "ok" + exp)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
+            Log.d(TAG, "ok $exception")
         }
     }
 
     fun hideApiLoader() {
         try {
             if (loaderDialog != null && loaderDialog?.isVisible!!) loaderDialog?.dismiss()
-        } catch (exp: Exception) {
-            Log.d(TAG, "ok" + exp)
+        } catch (exception: Exception) {
+            exception.printStackTrace()
         }
     }
 
-    abstract fun isNetworkConnected(networkConnected: Boolean)
-
-    protected fun showInternetSnackbar(internetConnected: Boolean, txtNoInternet: TextView) {
-        if (internetConnected) {
-            txtNoInternet.text = getString(R.string.back_online)
-            val color = arrayOf(
-                ColorDrawable(ContextCompat.getColor(this,R.color.red_ff090b)),
-                ColorDrawable(ContextCompat.getColor(this,R.color.green_00de4a))
-            )
-            val trans = TransitionDrawable(color)
-            txtNoInternet.background = (trans)
-            trans.startTransition(500)
-            val handler = Handler()
-            handler.postDelayed({ txtNoInternet.gone() }, 1300)
-        } else {
-            txtNoInternet.text = getString(R.string.no_internet_connection)
-            txtNoInternet.setBackgroundResource(R.color.red_ff090b)
-            txtNoInternet.visible()
-        }
+    fun <T> callApiResponse(
+        lifecycleOwner: LifecycleOwner,
+        respo: MutableLiveData<T>,
+        apiChangeListener: ApiChangeListener
+    ) {
+        respo.removeObservers(lifecycleOwner)
+        respo.observe(lifecycleOwner, object : Observer<T> {
+            override fun onChanged(t: T) {
+                val dataResult = t as ApiResponse<*>
+                when (dataResult.status) {
+                    ApiStatus.LOADING -> {
+                        showApiLoader()
+                        return
+                    }
+                    ApiStatus.ERROR -> {
+                        hideApiLoader()
+                        if (dataResult.message != null && dataResult.message?.length!! > 0)
+                            ValidationHelper.showSnackBar(
+                                findViewById(android.R.id.content),
+                                dataResult.message!!
+                            )
+                        else showToast(getString(R.string.something_went_wrong))
+                    }
+                }
+                apiChangeListener.onChange(t)
+                respo.removeObserver(this)
+            }
+        })
     }
 
+    interface ApiChangeListener {
+        fun <T> onChange(t: T?)
+    }
 }

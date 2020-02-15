@@ -7,8 +7,11 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.*
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.TransitionDrawable
 import android.media.RingtoneManager
 import android.os.Build
+import android.os.Handler
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.format.DateFormat
@@ -19,11 +22,14 @@ import android.view.View
 import android.view.WindowManager
 import android.view.animation.AnimationUtils
 import android.view.inputmethod.InputMethodManager
+import android.widget.FrameLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.webaddicted.data.common.NotificationData
@@ -46,13 +52,76 @@ import java.util.*
 class GlobalUtility {
 
     companion object {
+        private var snackbar: Snackbar? = null
         /**
          * Created by Deepak Sharma(webaddicted) on 15/01/20.
          */
         fun showToast(message: String) {
             Toast.makeText(context, message, Toast.LENGTH_LONG).show()
         }
+        fun initSnackBar(context: Activity, networkConnected: Boolean) {
+            if (networkConnected && snackbar != null && snackbar?.isShown!!) {
+                updateSnackbar(snackbar!!)
+                return
+            }
+            snackbar =
+                Snackbar.make(
+                    context.findViewById<View>(android.R.id.content),
+                    "",
+                    Snackbar.LENGTH_INDEFINITE
+                )//.setBehavior(NoSwipeBehavior())
+            snackbar?.let {
+                val layoutParams =
+                    (it.view.layoutParams as FrameLayout.LayoutParams)
+                        .also { lp -> lp.setMargins(0, 0, 0, 0) }
+                it.view.layoutParams = layoutParams
+                it.view.alpha = 0.90f
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    it.view.elevation = 0f
+                }
+                val message = "no internet connection"
+                if (networkConnected) updateSnackbar(it)
+                else it.view.setBackgroundColor(Color.RED)
+                val spannableString = SpannableString(message).apply {
+                    setSpan(ForegroundColorSpan(Color.WHITE), 0, message.length, 0)
+                }
+                it.setText(spannableString)
+                it.show()
+            }
+        }
 
+        private fun updateSnackbar(view: Snackbar){
+            if (view != null) {
+                val color = arrayOf(
+                    ColorDrawable(Color.RED),
+                    ColorDrawable(Color.GREEN)
+                )
+                val trans = TransitionDrawable(color)
+                view.view.background = (trans)
+                trans.startTransition(500)
+                val handler = Handler()
+                handler.postDelayed({ view.dismiss() }, 1300)
+                view.setText("back online")
+            }
+        }
+         fun showInternetSnackbar(internetConnected: Boolean, txtNoInternet: TextView) {
+            if (internetConnected) {
+                txtNoInternet.text = context.getString(R.string.back_online)
+                val color = arrayOf(
+                    ColorDrawable(Color.RED),
+                    ColorDrawable(ContextCompat.getColor(context, R.color.green_00de4a))
+                )
+                val trans = TransitionDrawable(color)
+                txtNoInternet.background = (trans)
+                trans.startTransition(500)
+                val handler = Handler()
+                handler.postDelayed({ txtNoInternet.gone() }, 1300)
+            } else {
+                txtNoInternet.text = context.getString(R.string.no_internet_connection)
+                txtNoInternet.setBackgroundResource(R.color.red_ff090b)
+                txtNoInternet.visible()
+            }
+        }
         fun getDate(context: Context, mDobEtm: TextView) {
             val datePickerDialog = DatePickerDialog(
                 context,

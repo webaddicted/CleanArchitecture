@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import com.webaddicted.network.utils.ApiResponse
 import com.webaddicted.network.utils.ApiStatus
 import com.webaddicted.techcleanarch.R
@@ -41,21 +43,6 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         initUI(mBinding, view)
         super.onViewCreated(view, savedInstanceState)
-
-    }
-
-    protected fun <T> apiResponseHandler(view: View, response: ApiResponse<T>) {
-        when (response.status) {
-            ApiStatus.LOADING -> {
-                showApiLoader()
-            }
-            ApiStatus.ERROR -> {
-                hideApiLoader()
-                if (response.message != null && response.message?.length!! > 0)
-                    ValidationHelper.showSnackBar(view, response.message!!)
-                else activity?.showToast(getString(R.string.something_went_wrong))
-            }
-        }
     }
 
     override fun onResume() {
@@ -106,18 +93,13 @@ abstract class BaseFragment : Fragment(), View.OnClickListener {
 
     override fun onClick(v: View) {
     }
+    fun <T> callApiResponse(lifecycleOwner: LifecycleOwner, respo: MutableLiveData<T>, apiChangeListener: BaseActivity.ApiChangeListener) {
+        (activity as BaseActivity).callApiResponse(lifecycleOwner,respo,apiChangeListener)
+    }
 
     protected fun hideApiLoader() = (activity as BaseActivity).hideApiLoader()
 
     protected fun showApiLoader() = (activity as BaseActivity).showApiLoader()
-
-    fun checkStoragePermission(): ArrayList<String> {
-        return (activity as BaseActivity).checkStoragePermission()
-    }
-
-    fun checkLocationPermission(): ArrayList<String> {
-        return (activity as BaseActivity).checkLocationPermission()
-    }
 
     fun getPlaceHolder(imageLoaderPos: Int): String {
         val imageLoader = resources.getStringArray(R.array.image_loader)

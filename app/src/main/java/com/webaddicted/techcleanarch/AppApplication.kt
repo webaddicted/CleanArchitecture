@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.IntentFilter
 import android.net.ConnectivityManager
+import com.facebook.stetho.Stetho
 import com.webaddicted.data.sharedpref.PreferenceUtils
 import com.webaddicted.techcleanarch.global.common.NetworkChangeReceiver
 import com.webaddicted.techcleanarch.global.koin.*
@@ -12,12 +13,13 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
-import com.facebook.stetho.Stetho;
+
 /**
  * Created by Deepak Sharma(webaddicted) on 15/01/20.
  */
 class AppApplication : Application() {
     private val mNetworkReceiver = NetworkChangeReceiver()
+
     companion object {
         lateinit var context: Context
     }
@@ -46,6 +48,7 @@ class AppApplication : Application() {
             dbModule
         )
     }
+
     private fun checkInternetConnection() {
         registerReceiver(mNetworkReceiver, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }

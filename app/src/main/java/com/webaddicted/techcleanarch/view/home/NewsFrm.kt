@@ -5,18 +5,22 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.webaddicted.model.news.NewsChanelRespo
+import com.webaddicted.network.utils.ApiResponse
 import com.webaddicted.techcleanarch.view.base.ScrollListener
 import com.webaddicted.network.utils.ApiStatus
 import com.webaddicted.techcleanarch.R
 import com.webaddicted.techcleanarch.databinding.FrmNewsBinding
 import com.webaddicted.techcleanarch.global.misc.AppConstant
+import com.webaddicted.techcleanarch.global.misc.GlobalUtility.Companion.showToast
 import com.webaddicted.techcleanarch.global.misc.gone
 import com.webaddicted.techcleanarch.global.misc.visible
 import com.webaddicted.techcleanarch.view.adapter.NewsAdapter
+import com.webaddicted.techcleanarch.view.base.BaseActivity
 import com.webaddicted.techcleanarch.view.base.BaseFragment
 import com.webaddicted.techcleanarch.viewmodel.NewsViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -54,7 +58,7 @@ class NewsFrm : BaseFragment() {
     private fun init() {
         mBinding.toolbar.imgProfile.visible()
         mBinding.toolbar.txtToolbarTitle.text = resources.getString(R.string.news_channel)
-        mBinding.parent.setBackgroundColor(ContextCompat.getColor(activity!!,R.color.grey_light))
+        mBinding.parent.setBackgroundColor(ContextCompat.getColor(activity!!, R.color.grey_light))
         callApi()
     }
 
@@ -84,17 +88,21 @@ class NewsFrm : BaseFragment() {
     }
 
     private fun callApi() {
-        mViewModel.newsRespo.observe(this, Observer { response ->
-            apiResponseHandler(mBinding.parent, response)
-            when (response.status) {
-                ApiStatus.SUCCESS -> {
-                    hideApiLoader()
-                    if (newsList == null || newsList?.size == 0) newsList = response.data!!.sources
-                    else newsList?.addAll(response.data!!.sources)
-                    newsAdapter.notifyAdapter(newsList!!)
-                    if (newsList == null || newsList?.size == 0)
-                        mBinding.txtNoDataFound.visible()
-                    else mBinding.txtNoDataFound.gone()
+        mViewModel.newsRespo = MutableLiveData()
+        callApiResponse(this, mViewModel.newsRespo, object : BaseActivity.ApiChangeListener {
+            override fun <T> onChange(t: T?) {
+                var response = t as ApiResponse<NewsChanelRespo>
+                when (response.status) {
+                    ApiStatus.SUCCESS -> {
+                        hideApiLoader()
+                        if (newsList == null || newsList?.size == 0) newsList =
+                            response.data!!.sources
+                        else newsList?.addAll(response.data!!.sources)
+                        newsAdapter.notifyAdapter(newsList!!)
+                        if (newsList == null || newsList?.size == 0)
+                            mBinding.txtNoDataFound.visible()
+                        else mBinding.txtNoDataFound.gone()
+                    }
                 }
             }
         })
