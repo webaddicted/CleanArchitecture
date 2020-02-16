@@ -28,6 +28,7 @@
 
             <Button
                 android:id="@+id/btn_capture_image"
+                android:textAppearance="@style/TextAppearance_medium"
                 android:layout_width="@dimen/_160sdp"
                 android:layout_height="@dimen/_40sdp"
                 android:layout_marginTop="@dimen/_20sdp"
@@ -39,6 +40,7 @@
                 android:id="@+id/btn_pick_image"
                 android:layout_width="@dimen/_160sdp"
                 android:layout_height="@dimen/_40sdp"
+                android:textAppearance="@style/TextAppearance_medium"
                 android:layout_marginTop="@dimen/_20sdp"
                 android:background="@color/app_color"
                 android:text="@string/pick_image"

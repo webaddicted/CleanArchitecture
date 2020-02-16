@@ -18,13 +18,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/_5sdp"
                 android:layout_marginTop="@dimen/_8sdp"
+                android:layout_marginEnd="@dimen/_3sdp"
                 android:layout_marginRight="@dimen/_3sdp"
                 android:layout_marginBottom="@dimen/_8sdp"
-
-                android:orientation="horizontal"
-                android:layout_marginStart="@dimen/_5sdp"
-                android:layout_marginEnd="@dimen/_3sdp">
+                android:orientation="horizontal">
 
                 <com.webaddicted.techcleanarch.global.customview.CircleImageView
                     android:id="@+id/img_channel_img"
@@ -36,25 +35,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
+                    android:layout_marginStart="@dimen/_5sdp"
                     android:layout_marginLeft="@dimen/_5sdp"
-                    android:orientation="vertical"
-                    android:layout_marginStart="@dimen/_5sdp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/txt_channel_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/txt_black_medium"
                         android:layout_gravity="start"
-                        android:text="@string/app_name"
-                        android:textSize="@dimen/_13sdp" />
+                        android:text="@string/app_name" />
 
                     <TextView
                         android:id="@+id/txt_channel_desc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/txt_gray_light"
                         android:maxLines="2"
                         android:text="@string/dummyText"
-                        android:textColor="@color/gray"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>
             </LinearLayout>
