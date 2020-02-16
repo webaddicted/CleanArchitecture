@@ -70,6 +70,7 @@ dependencies {
     implementation 'com.airbnb.android:lottie:3.0.0'
 //    dimension
     implementation 'com.intuit.sdp:sdp-android:1.0.6'
+    implementation 'com.skyfishjy.ripplebackground:library:1.0.1'
 }
 kapt {
     generateStubs = true
