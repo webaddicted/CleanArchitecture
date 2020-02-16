@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TechCleanArch</string>
+    <string name="app_name">Clean Architecture</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
     <string name="forcefully_enable_permission">You have forcefully denied some of the required permissions for this action.\nPlease go to permissions and allow them.</string>

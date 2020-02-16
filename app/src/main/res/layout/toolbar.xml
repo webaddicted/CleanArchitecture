@@ -67,7 +67,6 @@
                             android:layout_height="@dimen/_23sdp"
                             android:contentDescription="@string/my_profile"
                             android:src="@drawable/ic_profile"
-                            android:tint="@color/gray_CDCDCD"
                             android:visibility="gone" />
                     </LinearLayout>
                 </RelativeLayout>

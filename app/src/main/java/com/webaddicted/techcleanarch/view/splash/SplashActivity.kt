@@ -26,6 +26,7 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun init() {
+        mBinding.ripple.startRippleAnimation()
         navigateToNext()
     }
 

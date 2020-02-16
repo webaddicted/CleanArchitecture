@@ -48,7 +48,7 @@
                     <TextView
                         android:id="@+id/txt_channel_desc"
                         style="@style/txt_gray_light"
-                        android:maxLines="2"
+                        android:maxLines="3"
                         android:text="@string/dummyText"
                         android:textSize="@dimen/_12sdp" />
                 </LinearLayout>

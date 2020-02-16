@@ -6,7 +6,7 @@ package com.webaddicted.techcleanarch.global.misc
 class AppConstant {
     companion object {
         const val PAGINATION_SIZE: Int = 10
-        const val SPLASH_DELAY: Long = 3000
+        const val SPLASH_DELAY: Long = 8000
         const val NOTIFICATION_CHANNEL_ID = "com.example"
     }
 
