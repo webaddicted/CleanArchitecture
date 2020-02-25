@@ -5,8 +5,6 @@ Kotlin android application example with MVVM pattern, android architecture compo
 Screenshot
 -----------
 
-![Demo screenshot](screenshot/start_project.gif "gif demo")
-
 ![Demo screenshot](screenshot/video.gif "gif demo")
 
 
