@@ -7,6 +7,9 @@ Screenshot
 
 ![Demo screenshot](screenshot/start_project.gif "gif demo")
 
+![Demo screenshot](screenshot/video.gif "gif demo")
+
+
 Clean Architecture
 -----------
 
