@@ -1,6 +1,23 @@
 # CleanArchitecture
 
+[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23406-2CA3E6.svg?style=flat)](http://androidweekly.net/issues/issue-406)
+![Github Followers](https://img.shields.io/github/followers/webaddicted?label=Follow&style=social)
+![GitHub stars](https://img.shields.io/github/stars/webaddicted/CleanArchitecture?style=social)
+![GitHub forks](https://img.shields.io/github/forks/webaddicted/CleanArchitecture?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/webaddicted/CleanArchitecture?style=social)
+
+
 Kotlin android application example with MVVM pattern, android architecture components, and kotlin coroutine.
+
+
+## APK
+
+***You can Install and test latest Kotlin Clean Architecture app from below 👇***
+
+[![Kotlin Clean Architecture](https://img.shields.io/badge/Clean%20Architecture-Apk-brightgreen.svg?style=for-the-badge&logo=android)](https://github.com/webaddicted/CleanArchitecture/tree/master/apk/CleanArchitecture.apk)
+
+
 
 Screenshot
 -----------
@@ -17,7 +34,7 @@ Clean Architecture
 
 # Release 2.0 (09/FEB/2020)
 
-https://github.com/webaddicted/CleanArchitecture/archive/2.0.zip
+[Release 2.0 Download Here](https://github.com/webaddicted/CleanArchitecture/archive/2.0.zip)
 
 This release cover following feature :
 
@@ -31,7 +48,7 @@ This release cover following feature :
 
 # Release 1.0 (09/FEB/2020)
 
-https://github.com/webaddicted/CleanArchitecture/archive/1.0.zip
+[Release 1.0 Download Here](https://github.com/webaddicted/CleanArchitecture/archive/1.0.zip)
 
 This release cover following feature :
 
@@ -65,3 +82,30 @@ When you do a network operation, you cant handle network call in the main thread
 
 Another option for background threading in android is coroutines . Co - cooperation, routines mean function so that means function cooperating  with each other. It is a new way of writing asynchronous code which is light weight and much more efficient background thread. 
 
+
+
+
+## LICENSE
+```
+MIT License
+
+Copyright (c) 2020 Deepak Sharma (webaddicted)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
