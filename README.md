@@ -1,6 +1,23 @@
 # CleanArchitecture
 
+[![GitHub license](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23406-2CA3E6.svg?style=flat)](http://androidweekly.net/issues/issue-406)
+![Github Followers](https://img.shields.io/github/followers/webaddicted?label=Follow&style=social)
+![GitHub stars](https://img.shields.io/github/stars/webaddicted/CleanArchitecture?style=social)
+![GitHub forks](https://img.shields.io/github/forks/webaddicted/CleanArchitecture?style=social)
+![GitHub watchers](https://img.shields.io/github/watchers/webaddicted/CleanArchitecture?style=social)
+
+
 Kotlin android application example with MVVM pattern, android architecture components, and kotlin coroutine.
+
+
+## APK
+
+***You can Install and test latest Kotlin Clean Architecture app from below 👇***
+
+[![Kotlin Clean Architecture](https://img.shields.io/badge/Clean%20Architecture-Apk-brightgreen.svg?style=for-the-badge&logo=android)](https://github.com/webaddicted/CleanArchitecture/tree/master/apk/CleanArchitecture.apk)
+
+
 
 Screenshot
 -----------
