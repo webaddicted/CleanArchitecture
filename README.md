@@ -34,7 +34,7 @@ Clean Architecture
 
 # Release 2.0 (09/FEB/2020)
 
-https://github.com/webaddicted/CleanArchitecture/archive/2.0.zip
+[Release 2.0 Download Here](https://github.com/webaddicted/CleanArchitecture/archive/2.0.zip)
 
 This release cover following feature :
 
@@ -48,7 +48,7 @@ This release cover following feature :
 
 # Release 1.0 (09/FEB/2020)
 
-https://github.com/webaddicted/CleanArchitecture/archive/1.0.zip
+[Release 1.0 Download Here](https://github.com/webaddicted/CleanArchitecture/archive/1.0.zip)
 
 This release cover following feature :
 
